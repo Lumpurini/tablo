@@ -63,7 +63,7 @@
         hide();
       } else if (r.body && r.body.code === '28P01') {
         save(null);
-        overlay('Невірний пароль.');
+        overlay(password ? 'Невірний пароль.' : '');
       } else {
         overlay('Не вдалося отримати дані. Спробуйте ще раз за хвилину.');
       }
@@ -72,9 +72,10 @@
     });
   }
 
+  // Спершу пробуємо без вікна входу: якщо табло відкрите (режим тестування) або пароль уже збережено,
+  // цифри з'являться одразу. Вікно входу показуємо лише тоді, коли база просить пароль.
   function start() {
-    var p = saved();
-    if (p) { overlay(''); load(p); } else { overlay(''); }
+    load(saved() || '');
   }
   if (document.body) start(); else document.addEventListener('DOMContentLoaded', start);
 })();
