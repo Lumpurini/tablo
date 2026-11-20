@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+<title>Lumpurini · Табло продажів</title>
+<meta name="robots" content="noindex,nofollow">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="./support.js"></script>
@@ -480,7 +482,7 @@ class Component extends DCLogic {
     const adRows = AD.rows.map(a => { const sl = a.weeks.map(w => w.sales[k]), sp = a.weeks.map(w => w.spend[k]), mx = Math.max(1, ...sl, ...sp); return { name: a.name, spend: money(sum(sp)), sales: money(sum(sl)), share: share(sum(sp), sum(sl)), orders: sum(a.weeks.map(w => w.orders)),
       weeks: sl.map((v, i) => ({ op: AD.weeks[i].complete ? 1 : 0.45, salesH: (v ? Math.max(2, v / mx * 26) : 1) + 'px', spendH: (sp[i] ? Math.max(2, sp[i] / mx * 26) : 1) + 'px', title: wl[i] + (AD.weeks[i].complete ? '' : ' (неповний)') + ': продажі ' + money(v) + ' · витрати ' + money(sp[i]) })) }; });
     const adTotal = { spend: money(sum(awS)), sales: money(sum(awL)), share: share(sum(awS), sum(awL)), orders: sum(AD.rows.map(a => sum(a.weeks.map(w => w.orders)))) };
-    const af = pd(AD.weeks[0].from), at = pd(AD.weeks[AD.weeks.length - 1].to), afile = pd(AD.fileDate);
+    const af = pd(AD.weeks[0].from), at = pd(AD.weeks[AD.weeks.length - 1].to), afile = AD.fileDate ? pd(AD.fileDate) : null;
 
     const btn = (on, label, pick) => ({ label, pick, bg: on ? 'var(--card)' : 'transparent', fg: on ? 'var(--ink)' : 'var(--mute)', shadow: on ? '0 1px 2px var(--shadow)' : 'none' });
     return {
@@ -492,7 +494,7 @@ class Component extends DCLogic {
       noSales: (D.meta.channelsWithoutSales || []).join(', '),
       pCols, pRows, pTotal, pGrid: 'minmax(270px,1fr) 84px 110px repeat(' + chN.length + ',68px) 110px 84px', pMinW: 700 + chN.length * 80 + 'px',
       prCols: chN, prRows, prGrid: 'minmax(270px,1fr) repeat(' + chN.length + ',minmax(120px,1fr))', prMinW: 340 + chN.length * 136 + 'px',
-      adWeeks, adRows, adTotal, adPeriod: af.d + ' ' + MG[af.m - 1] + ' – ' + at.d + ' ' + MG[at.m - 1], adFile: 'Файл Allegro Ads: ' + fullDate(afile),
+      adWeeks, adRows, adTotal, adPeriod: af.d + ' ' + MG[af.m - 1] + ' – ' + at.d + ' ' + MG[at.m - 1], adFile: afile ? 'Файл Allegro Ads: ' + fullDate(afile) : 'Витрати на рекламу ще не завантажені',
       rows, mRows, views: [['chan','За каналами'],['type','За типом продажів']].map(([kk, l]) => btn(view === kk, l, () => this.setState({ view: kk }))),
       
       currencies: [['PLN','zł'],['EUR','€']].map(([kk, l]) => btn(cur === kk, l, () => this.setState({ cur: kk }))),
