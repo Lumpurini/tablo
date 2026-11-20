@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Lumpurini · Табло продажів</title>
-<meta name="robots" content="noindex,nofollow">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="./support.js"></script>
@@ -12,13 +10,14 @@
 <helmet><script src="./data.js"></script><link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&display=swap" rel="stylesheet"><style>
 :root{--bg:#e2e4eb;--card:#f2f3f7;--card2:#eaecf2;--line:#d0d4de;--soft:#dde0e9;--soft2:#d3d7e1;--ink:#1f2233;--ink2:#333648;--mid:#454959;--mute:#5d6173;--faint:#6f7387;--dim:#8a8ea0;--dash:#b4b9c9;--axis:#c0c5d2;--accent:oklch(0.48 0.17 275);--accent2:oklch(0.66 0.11 275);--red:oklch(0.52 0.19 25);--okbg:oklch(0.91 0.06 155);--okfg:oklch(0.38 0.11 155);--badbg:oklch(0.91 0.05 25);--badfg:oklch(0.43 0.17 25);--zerobg:oklch(0.93 0.03 25);--amber:oklch(0.42 0.10 70);--shadow:rgba(31,34,51,.14);--warnbg:oklch(0.92 0.06 85);--warnline:oklch(0.76 0.11 85);--warnfg:oklch(0.32 0.07 70)}
 :root[data-theme="dark"]{--bg:#14161d;--card:#1e212b;--card2:#242834;--line:#333848;--soft:#2c3141;--soft2:#2c3141;--ink:#e8eaf2;--ink2:#d5d8e3;--mid:#bcc0cf;--mute:#a1a6b8;--faint:#8d92a6;--dim:#72778b;--dash:#4d5368;--axis:#474d60;--accent:oklch(0.74 0.13 275);--accent2:oklch(0.56 0.10 275);--red:oklch(0.55 0.19 25);--okbg:oklch(0.32 0.06 155);--okfg:oklch(0.86 0.12 155);--badbg:oklch(0.32 0.07 25);--badfg:oklch(0.86 0.09 25);--zerobg:oklch(0.26 0.04 25);--amber:oklch(0.80 0.11 75);--shadow:rgba(0,0,0,.45);--warnbg:oklch(0.30 0.05 80);--warnline:oklch(0.48 0.08 80);--warnfg:oklch(0.88 0.09 85)}
-body{margin:0;background:var(--bg)}a{color:var(--accent)}a:hover{color:var(--ink)}</style></helmet>
+body{margin:0;background:var(--bg)}*::-webkit-scrollbar{width:10px;height:10px}*::-webkit-scrollbar-thumb{background:var(--dash);border-radius:6px;border:2px solid transparent;background-clip:padding-box}*::-webkit-scrollbar-track{background:transparent}a{color:var(--accent)}a:hover{color:var(--ink)}</style></helmet>
 <div style="font-family:'Onest',system-ui,sans-serif;background:var(--bg);color:var(--ink);min-height:100%;padding:0 0 48px;font-size:14px;line-height:1.35;font-variant-numeric:tabular-nums">
-  <div style="background:var(--card);border-bottom:1px solid var(--line);padding:14px 32px 0">
+  <div style="background:var(--card);border-bottom:1px solid var(--line);padding:14px clamp(12px,3vw,32px) 0">
     <div style="display:flex;flex-wrap:wrap;align-items:center;gap:16px;justify-content:space-between">
       <div style="display:flex;align-items:baseline;gap:10px">
         <div style="font-weight:700;font-size:18px;letter-spacing:-0.01em">Lumpurini</div>
         <div style="color:var(--mute)">Табло продажів</div>
+        <div style="display:flex;align-items:center;gap:5px;font-size:11.5px;color:var(--faint)"><span style="width:6px;height:6px;border-radius:50%;background:{{ srcDot }}"></span>{{ srcLabel }}</div>
       </div>
       <div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px">
         
@@ -27,7 +26,7 @@ body{margin:0;background:var(--bg)}a{color:var(--accent)}a:hover{color:var(--ink
           <sc-for list="{{ currencies }}" as="c" hint-placeholder-count="2">
             <button onClick="{{ c.pick }}" style="border:0;border-radius:8px;padding:7px 14px;font:600 13px 'Onest',sans-serif;cursor:pointer;background:{{ c.bg }};color:{{ c.fg }};box-shadow:{{ c.shadow }}">{{ c.label }}</button>
           </sc-for>
-        </div>
+        </div><span onMouseEnter="{{ tips.cur.on }}" onMouseLeave="{{ tips.cur.off }}" onClick="{{ tips.cur.click }}" style="display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;box-sizing:border-box;border-radius:50%;border:1px solid var(--dash);color:var(--faint);font:600 10px 'Onest',sans-serif;font-style:normal;cursor:help;vertical-align:middle;margin-left:6px;flex:none;user-select:none;text-align:center">i<sc-if value="{{ tips.cur.open }}" hint-placeholder-val="{{ false }}"><span style="position:fixed;left:{{ tipX }};top:{{ tipY }};transform:{{ tipT }};z-index:1000;box-sizing:border-box;width:max-content;max-width:300px;background:var(--ink);color:var(--card);font:400 12.5px/1.45 'Onest',sans-serif;padding:9px 12px;border-radius:8px;box-shadow:0 6px 20px var(--shadow);text-align:left;white-space:normal;cursor:default">Продажі й прибуток показані без ПДВ, ціни товарів з ПДВ. Кнопка перемикає валюту: zł або €.</span></sc-if></span>
       </div>
     </div>
     <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:14px">
@@ -38,14 +37,14 @@ body{margin:0;background:var(--bg)}a{color:var(--accent)}a:hover{color:var(--ink
   </div>
 
   <sc-if value="{{ tabSources }}" hint-placeholder-val="{{ true }}">
-  <div style="padding:20px 32px 0;display:flex;flex-wrap:wrap;gap:8px 24px;align-items:baseline;justify-content:space-between">
+  <div style="padding:20px clamp(12px,3vw,32px) 0;display:flex;flex-wrap:wrap;gap:8px 24px;align-items:baseline;justify-content:space-between">
     <div style="font-size:15px"><span style="font-weight:600">{{ periodCur }}</span><span style="color:var(--mute)">, порівняння з {{ periodPrev }}</span></div>
     <div style="color:var(--mute);font-size:13px">{{ updatedText }}</div>
   </div>
 
-  <div style="margin:16px 32px 0;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px 28px;display:flex;flex-wrap:wrap;gap:28px 40px">
+  <div style="margin:16px clamp(12px,3vw,32px) 0;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px 28px;display:flex;flex-wrap:wrap;gap:28px 40px">
     <div style="flex:0 1 270px;min-width:230px;display:flex;flex-direction:column;gap:6px">
-      <div style="color:var(--mute);font-size:13px">Продажі з початку місяця</div>
+      <div style="color:var(--mute);font-size:13px">Продажі з початку місяця<span onMouseEnter="{{ tips.total.on }}" onMouseLeave="{{ tips.total.off }}" onClick="{{ tips.total.click }}" style="display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;box-sizing:border-box;border-radius:50%;border:1px solid var(--dash);color:var(--faint);font:600 10px 'Onest',sans-serif;font-style:normal;cursor:help;vertical-align:middle;margin-left:6px;flex:none;user-select:none;text-align:center">i<sc-if value="{{ tips.total.open }}" hint-placeholder-val="{{ false }}"><span style="position:fixed;left:{{ tipX }};top:{{ tipY }};transform:{{ tipT }};z-index:1000;box-sizing:border-box;width:max-content;max-width:300px;background:var(--ink);color:var(--card);font:400 12.5px/1.45 'Onest',sans-serif;padding:9px 12px;border-radius:8px;box-shadow:0 6px 20px var(--shadow);text-align:left;white-space:normal;cursor:default">З 1-го числа по вчора, без ПДВ. Поруч ті самі дні минулого місяця. Суцільна смужка: цей місяць, контурна: минулий.</span></sc-if></span></div>
       <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap">
         <div style="font-size:44px;font-weight:700;letter-spacing:-0.02em;line-height:1.05">{{ total.cur }}</div>
         <div style="color:var(--faint);font-size:12px">без ПДВ</div>
@@ -78,64 +77,85 @@ body{margin:0;background:var(--bg)}a{color:var(--accent)}a:hover{color:var(--ink
         </div>
         <sc-if value="{{ noSales }}" hint-placeholder-val="{{ false }}"><div style="margin-top:18px;font-size:12.5px;color:var(--faint)">Ще без продажів: {{ noSales }}</div></sc-if>
       </div>
-      <div style="flex:1 1 300px;min-width:0">
-        <div style="font-weight:600;margin-bottom:14px">Місяць по відрізках <span style="font-weight:400;color:var(--faint);font-size:12px">без ПДВ</span></div>
-        <div style="display:flex;gap:10px;align-items:flex-end;border-bottom:1px solid var(--axis);height:170px">
-          <sc-for list="{{ b.weeks }}" as="w" hint-placeholder-count="3">
-            <div style="flex:1;display:flex;justify-content:center;align-items:flex-end;gap:5px">
-              <div style="display:flex;flex-direction:column;align-items:center;gap:4px;width:46px"><div style="font-weight:700;font-size:12px;white-space:nowrap">{{ w.cur }}</div><div style="width:100%;height:{{ w.curH }};background:var(--accent);border-radius:5px 5px 0 0"></div></div>
-              <div style="display:flex;flex-direction:column;align-items:center;gap:4px;width:46px"><div style="font-size:12px;color:var(--mute);white-space:nowrap">{{ w.prev }}</div><div style="width:100%;height:{{ w.prevH }};box-sizing:border-box;border:2px dashed var(--accent2);border-bottom:0;background:var(--card);border-radius:5px 5px 0 0"></div></div>
+      </div>
+  </div>
+
+  <div style="margin:16px clamp(12px,3vw,32px) 0;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px 28px">
+    <div style="font-weight:700;font-size:18px;margin-bottom:20px">Місяць по декадах <span style="font-weight:400;color:var(--faint);font-size:12px">без ПДВ</span><span onMouseEnter="{{ tips.decades.on }}" onMouseLeave="{{ tips.decades.off }}" onClick="{{ tips.decades.click }}" style="display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;box-sizing:border-box;border-radius:50%;border:1px solid var(--dash);color:var(--faint);font:600 10px 'Onest',sans-serif;font-style:normal;cursor:help;vertical-align:middle;margin-left:6px;flex:none;user-select:none;text-align:center">i<sc-if value="{{ tips.decades.open }}" hint-placeholder-val="{{ false }}"><span style="position:fixed;left:{{ tipX }};top:{{ tipY }};transform:{{ tipT }};z-index:1000;box-sizing:border-box;width:max-content;max-width:300px;background:var(--ink);color:var(--card);font:400 12.5px/1.45 'Onest',sans-serif;padding:9px 12px;border-radius:8px;box-shadow:0 6px 20px var(--shadow);text-align:left;white-space:normal;cursor:default">Декади: 1–10, 11–20, 21 – кінець місяця. Синій стовпчик: цей місяць, пунктир: повна декада минулого місяця. Відсоток у завершеної декади рахується проти повної декади минулого місяця, у поточної проти тих самих днів. Дати видно при наведенні на декаду.</span></sc-if></span></div>
+    <div style="display:flex;flex-wrap:wrap;gap:28px 36px;align-items:stretch">
+      <div style="flex:3 1 520px;min-width:0;overflow-x:auto">
+        <div style="display:flex;gap:12px;min-width:380px">
+          <sc-for list="{{ decades }}" as="d" hint-placeholder-count="3">
+            <div title="{{ d.tip }}" style="flex:1;min-width:0;display:flex;flex-direction:column">
+              <div style="font-weight:600;font-size:15px;text-align:center;margin-bottom:10px">{{ d.title }}</div>
+              <div style="height:230px;display:flex;justify-content:center;align-items:flex-end;gap:8px;border-bottom:1px solid var(--axis)">
+                <div style="flex:0 1 84px;min-width:0;display:flex;flex-direction:column;align-items:center;gap:6px">
+                  <sc-if value="{{ d.started }}" hint-placeholder-val="{{ true }}"><div style="font-weight:700;font-size:14px;white-space:nowrap">{{ d.cur }}</div><div style="width:100%;height:{{ d.curH }};background:var(--accent);border-radius:6px 6px 0 0;display:flex;align-items:flex-end;justify-content:center;overflow:hidden"><span style="font-size:11.5px;font-weight:500;color:var(--card);padding-bottom:5px;white-space:nowrap">{{ d.curLabel }}</span></div></sc-if>
+                </div>
+                <div style="flex:0 1 84px;min-width:0;display:flex;flex-direction:column;align-items:center;gap:6px">
+                  <div style="font-size:14px;color:var(--mute);white-space:nowrap">{{ d.prevFull }}</div>
+                  <div style="width:100%;height:{{ d.prevH }};box-sizing:border-box;border:2px dashed var(--accent2);border-bottom:0;border-radius:6px 6px 0 0;display:flex;align-items:flex-end;justify-content:center;overflow:hidden"><span style="font-size:11.5px;color:var(--mute);padding-bottom:5px;white-space:nowrap">{{ d.prevLabel }}</span></div>
+                </div>
+              </div>
+              <div style="padding-top:10px;display:flex;flex-direction:column;align-items:center;gap:5px;text-align:center;font-size:12.5px;color:var(--mute)">
+                <sc-if value="{{ d.started }}" hint-placeholder-val="{{ true }}"><div style="display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:4px 8px"><span style="background:{{ d.deltaBg }};color:{{ d.deltaFg }};font-weight:600;font-size:14px;border-radius:8px;padding:3px 9px;white-space:nowrap">{{ d.delta }}</span><sc-if value="{{ d.note }}" hint-placeholder-val="{{ false }}"><span style="color:var(--amber);font-weight:600;white-space:nowrap">{{ d.note }}</span></sc-if></div></sc-if>
+                <sc-if value="{{ d.ahead }}" hint-placeholder-val="{{ false }}"><div style="color:var(--faint)">ще попереду</div></sc-if>
+                <sc-if value="{{ d.daysLine }}" hint-placeholder-val="{{ false }}"><div>{{ d.daysLine }}</div></sc-if>
+              </div>
             </div>
           </sc-for>
         </div>
-        <div style="display:flex;gap:10px;padding-top:8px">
-          <sc-for list="{{ b.weeks }}" as="w" hint-placeholder-count="3">
-            <div style="flex:1;text-align:center;font-size:12.5px;color:var(--mid);display:flex;flex-direction:column;align-items:center;gap:4px"><div style="font-weight:600">{{ w.label }}</div><span style="background:{{ w.deltaBg }};color:{{ w.deltaFg }};font-weight:600;border-radius:6px;padding:1px 6px">{{ w.delta }}</span><div style="font-size:11.5px;color:var(--amber);font-weight:600">{{ w.note }}</div></div>
-          </sc-for>
+      </div>
+      <div style="flex:1 1 300px;min-width:0;background:var(--card2);border-radius:12px;padding:20px 22px;display:flex;flex-direction:column;gap:6px">
+        <div style="font-weight:700;font-size:15px;display:flex;align-items:center">Місяць у цілому<span onMouseEnter="{{ tips.month.on }}" onMouseLeave="{{ tips.month.off }}" onClick="{{ tips.month.click }}" style="display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;box-sizing:border-box;border-radius:50%;border:1px solid var(--dash);color:var(--faint);font:600 10px 'Onest',sans-serif;font-style:normal;cursor:help;vertical-align:middle;margin-left:6px;flex:none;user-select:none;text-align:center">i<sc-if value="{{ tips.month.open }}" hint-placeholder-val="{{ false }}"><span style="position:fixed;left:{{ tipX }};top:{{ tipY }};transform:{{ tipT }};z-index:1000;box-sizing:border-box;width:max-content;max-width:300px;background:var(--ink);color:var(--card);font:400 12.5px/1.45 'Onest',sans-serif;padding:9px 12px;border-radius:8px;box-shadow:0 6px 20px var(--shadow);text-align:left;white-space:normal;cursor:default">Окрема шкала: пунктир показує весь минулий місяць, синя смужка заповнює його продажами цього місяця.</span></sc-if></span></div>
+        <div style="color:var(--mute);font-size:13px;margin-top:8px"><span>З початку місяця · {{ month.daysText }}</span></div>
+        <div style="font-size:30px;font-weight:700;letter-spacing:-0.02em;line-height:1.1">{{ month.cur }}</div>
+        <div style="position:relative;height:40px;margin-top:14px">
+          <div style="position:absolute;left:0;top:0;bottom:0;width:{{ month.prevW }};box-sizing:border-box;border:2px dashed var(--accent2);border-radius:8px"></div>
+          <div style="position:absolute;left:6px;top:8px;bottom:8px;width:{{ month.curW }};min-width:4px;background:var(--accent);border-radius:4px"></div>
         </div>
+        <div style="width:{{ month.prevW }};min-width:150px;text-align:right;font-size:12.5px;color:var(--mute);white-space:nowrap"><span>{{ prevMonthLower }}: {{ month.prev }}</span></div>
+        <div style="margin-top:10px;display:flex"><span style="background:{{ month.bg }};color:{{ month.fg }};font-weight:600;border-radius:8px;padding:5px 11px">{{ month.status }}</span></div>
       </div>
     </div>
   </div>
 
-  <div style="margin:16px 32px 0;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow-x:auto">
+  <div style="margin:16px clamp(12px,3vw,32px) 0;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow-x:auto">
     <div style="min-width:940px">
       <div style="display:grid;grid-template-columns:minmax(200px,1fr) 170px 170px 170px 150px 110px;gap:16px;padding:12px 24px;border-bottom:1px solid var(--line);color:var(--mute);font-size:12.5px;align-items:end">
-        <div>Тип продажів</div><div style="text-align:right">Платно <span style="font-size:11px;color:var(--faint)">без ПДВ</span></div><div style="text-align:right">Безплатно <span style="font-size:11px;color:var(--faint)">без ПДВ</span></div><div style="text-align:right">Разом <span style="font-size:11px;color:var(--faint)">без ПДВ</span></div><div style="text-align:right">{{ prevMonth }} <span style="font-size:11px;color:var(--faint)">без ПДВ</span></div><div style="text-align:right">Зміна</div>
+        <div>Тип продажів</div><div style="text-align:right">Платно <span style="font-size:11px;color:var(--faint)">без ПДВ</span><span onMouseEnter="{{ tips.paid.on }}" onMouseLeave="{{ tips.paid.off }}" onClick="{{ tips.paid.click }}" style="display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;box-sizing:border-box;border-radius:50%;border:1px solid var(--dash);color:var(--faint);font:600 10px 'Onest',sans-serif;font-style:normal;cursor:help;vertical-align:middle;margin-left:6px;flex:none;user-select:none;text-align:center">i<sc-if value="{{ tips.paid.open }}" hint-placeholder-val="{{ false }}"><span style="position:fixed;left:{{ tipX }};top:{{ tipY }};transform:{{ tipT }};z-index:1000;box-sizing:border-box;width:max-content;max-width:300px;background:var(--ink);color:var(--card);font:400 12.5px/1.45 'Onest',sans-serif;padding:9px 12px;border-radius:8px;box-shadow:0 6px 20px var(--shadow);text-align:left;white-space:normal;cursor:default">Продаж прийшов з реклами або від блогерів, за яких ми платимо. Для Allegro це продажі від реклами за дні періоду з даних Allegro Ads.</span></sc-if></span></div><div style="text-align:right">Безплатно <span style="font-size:11px;color:var(--faint)">без ПДВ</span><span onMouseEnter="{{ tips.free.on }}" onMouseLeave="{{ tips.free.off }}" onClick="{{ tips.free.click }}" style="display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;box-sizing:border-box;border-radius:50%;border:1px solid var(--dash);color:var(--faint);font:600 10px 'Onest',sans-serif;font-style:normal;cursor:help;vertical-align:middle;margin-left:6px;flex:none;user-select:none;text-align:center">i<sc-if value="{{ tips.free.open }}" hint-placeholder-val="{{ false }}"><span style="position:fixed;left:{{ tipX }};top:{{ tipY }};transform:{{ tipT }};z-index:1000;box-sizing:border-box;width:max-content;max-width:300px;background:var(--ink);color:var(--card);font:400 12.5px/1.45 'Onest',sans-serif;padding:9px 12px;border-radius:8px;box-shadow:0 6px 20px var(--shadow);text-align:left;white-space:normal;cursor:default">Продаж без оплати за показ чи перехід. Для Allegro це «Разом» мінус «Платно».</span></sc-if></span></div><div style="text-align:right">Разом <span style="font-size:11px;color:var(--faint)">без ПДВ</span></div><div style="text-align:right">{{ prevMonth }} <span style="font-size:11px;color:var(--faint)">без ПДВ</span></div><div style="text-align:right">Зміна</div>
       </div>
       <sc-for list="{{ mRows }}" as="m" hint-placeholder-count="5">
         <div style="display:grid;grid-template-columns:minmax(200px,1fr) 170px 170px 170px 150px 110px;gap:16px;padding:14px 24px;border-bottom:1px solid var(--soft);align-items:center;background:{{ m.bg }};font-weight:{{ m.weight }}">
-          <div style="font-size:15px">{{ m.name }}</div>
+          <div style="font-size:15px;display:flex;align-items:center">{{ m.name }}<sc-if value="{{ m.tipHas }}" hint-placeholder-val="{{ false }}"><span onMouseEnter="{{ m.tip.on }}" onMouseLeave="{{ m.tip.off }}" onClick="{{ m.tip.click }}" style="display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;box-sizing:border-box;border-radius:50%;border:1px solid var(--dash);color:var(--faint);font:600 10px 'Onest',sans-serif;font-style:normal;cursor:help;vertical-align:middle;margin-left:6px;flex:none;user-select:none;text-align:center">i<sc-if value="{{ m.tip.open }}" hint-placeholder-val="{{ false }}"><span style="position:fixed;left:{{ tipX }};top:{{ tipY }};transform:{{ tipT }};z-index:1000;box-sizing:border-box;width:max-content;max-width:300px;background:var(--ink);color:var(--card);font:400 12.5px/1.45 'Onest',sans-serif;padding:9px 12px;border-radius:8px;box-shadow:0 6px 20px var(--shadow);text-align:left;white-space:normal;cursor:default">{{ m.tipText }}</span></sc-if></span></sc-if></div>
           <sc-for list="{{ m.cells }}" as="c" hint-placeholder-count="4">
-            <div style="text-align:right;font-size:{{ c.size }};font-weight:{{ c.weight }};color:{{ c.fg }}">
-              <sc-if value="{{ c.nd }}" hint-placeholder-val="{{ false }}"><span style="font-size:12px;color:var(--faint);border:1px dashed var(--dash);border-radius:6px;padding:2px 7px;font-weight:400">немає даних</span></sc-if>
-              <sc-if value="{{ c.val }}" hint-placeholder-val="{{ true }}">{{ c.text }} <span style="font-size:12px;color:var(--faint);font-weight:400">{{ c.share }}</span></sc-if>
-            </div>
+            <div style="text-align:right;font-size:{{ c.size }};font-weight:{{ c.weight }};color:{{ c.fg }}">{{ c.text }} <span style="font-size:12px;color:var(--faint);font-weight:400">{{ c.share }}</span><sc-if value="{{ c.sub }}" hint-placeholder-val="{{ false }}"><div style="font-size:11px;color:var(--faint);font-weight:400;margin-top:2px">{{ c.sub }}</div></sc-if></div>
           </sc-for>
           <div style="text-align:right"><span style="background:{{ m.deltaBg }};color:{{ m.deltaFg }};font-weight:600;border-radius:8px;padding:3px 9px;white-space:nowrap">{{ m.delta }}</span></div>
         </div>
       </sc-for>
     </div>
   </div>
-  <div style="margin:28px 32px 0;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
-    <div style="font-weight:600;font-size:16px">Усі джерела</div>
+  <div style="margin:28px clamp(12px,3vw,32px) 0;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+    <div style="font-weight:600;font-size:16px;display:flex;align-items:center">Усі джерела<span onMouseEnter="{{ tips.srcAll.on }}" onMouseLeave="{{ tips.srcAll.off }}" onClick="{{ tips.srcAll.click }}" style="display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;box-sizing:border-box;border-radius:50%;border:1px solid var(--dash);color:var(--faint);font:600 10px 'Onest',sans-serif;font-style:normal;cursor:help;vertical-align:middle;margin-left:6px;flex:none;user-select:none;text-align:center">i<sc-if value="{{ tips.srcAll.open }}" hint-placeholder-val="{{ false }}"><span style="position:fixed;left:{{ tipX }};top:{{ tipY }};transform:{{ tipT }};z-index:1000;box-sizing:border-box;width:max-content;max-width:300px;background:var(--ink);color:var(--card);font:400 12.5px/1.45 'Onest',sans-serif;padding:9px 12px;border-radius:8px;box-shadow:0 6px 20px var(--shadow);text-align:left;white-space:normal;cursor:default">Натисніть на канал, щоб розкрити країни або джерела. Червоний 0: раніше продажі були, тепер немає, варто перевірити джерело. «Немає даних»: джерело тоді ще не було підключене.</span></sc-if></span></div>
     <div style="display:flex;gap:2px;background:var(--soft2);border-radius:10px;padding:3px">
       <sc-for list="{{ views }}" as="s" hint-placeholder-count="2">
         <button onClick="{{ s.pick }}" style="border:0;border-radius:8px;padding:7px 14px;font:500 13px 'Onest',sans-serif;cursor:pointer;background:{{ s.bg }};color:{{ s.fg }};box-shadow:{{ s.shadow }}">{{ s.label }}</button>
       </sc-for>
     </div>
   </div>
-  <div style="margin:16px 32px 0;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow-x:auto">
+  <div style="margin:16px clamp(12px,3vw,32px) 0;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow-x:auto">
     <div style="min-width:1040px">
       <div style="display:grid;grid-template-columns:minmax(280px,1fr) 150px 210px 110px 150px 110px;gap:16px;padding:12px 24px;border-bottom:1px solid var(--line);color:var(--mute);font-size:12.5px;align-items:end">
         <div>Джерело</div>
         <div style="text-align:right">Продажі <span style="font-size:11px;color:var(--faint)">без ПДВ</span></div>
         <div>
-          <div>По відрізках</div>
+          <div style="display:flex;align-items:center">По декадах<span onMouseEnter="{{ tips.segs.on }}" onMouseLeave="{{ tips.segs.off }}" onClick="{{ tips.segs.click }}" style="display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;box-sizing:border-box;border-radius:50%;border:1px solid var(--dash);color:var(--faint);font:600 10px 'Onest',sans-serif;font-style:normal;cursor:help;vertical-align:middle;margin-left:6px;flex:none;user-select:none;text-align:center">i<sc-if value="{{ tips.segs.open }}" hint-placeholder-val="{{ false }}"><span style="position:fixed;left:{{ tipX }};top:{{ tipY }};transform:{{ tipT }};z-index:1000;box-sizing:border-box;width:max-content;max-width:300px;background:var(--ink);color:var(--card);font:400 12.5px/1.45 'Onest',sans-serif;padding:9px 12px;border-radius:8px;box-shadow:0 6px 20px var(--shadow);text-align:left;white-space:normal;cursor:default">Три декади місяця. Синій: цей місяць, контур: ті самі дні минулого місяця, у майбутньої декади пунктир повної декади минулого місяця. Суми видно при наведенні. {{ segNote }}</span></sc-if></span></div>
           <div style="display:flex;gap:8px;font-size:10.5px;color:var(--faint);margin-top:2px"><sc-for list="{{ segLabels }}" as="sl" hint-placeholder-count="3"><span style="width:34px;display:flex;justify-content:center;white-space:nowrap">{{ sl }}</span></sc-for></div>
         </div>
         <div style="text-align:right">Замовлення</div>
         <div style="text-align:right">{{ prevMonth }} <span style="font-size:11px;color:var(--faint)">без ПДВ</span></div>
-        <div style="text-align:right">Зміна</div>
+        <div style="text-align:right">Зміна<span onMouseEnter="{{ tips.change.on }}" onMouseLeave="{{ tips.change.off }}" onClick="{{ tips.change.click }}" style="display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;box-sizing:border-box;border-radius:50%;border:1px solid var(--dash);color:var(--faint);font:600 10px 'Onest',sans-serif;font-style:normal;cursor:help;vertical-align:middle;margin-left:6px;flex:none;user-select:none;text-align:center">i<sc-if value="{{ tips.change.open }}" hint-placeholder-val="{{ false }}"><span style="position:fixed;left:{{ tipX }};top:{{ tipY }};transform:{{ tipT }};z-index:1000;box-sizing:border-box;width:max-content;max-width:300px;background:var(--ink);color:var(--card);font:400 12.5px/1.45 'Onest',sans-serif;padding:9px 12px;border-radius:8px;box-shadow:0 6px 20px var(--shadow);text-align:left;white-space:normal;cursor:default">Зміна проти тих самих днів минулого місяця. «новий»: минулого місяця продажів не було, тепер є. «—»: порівнювати нема з чим.</span></sc-if></span></div>
       </div>
       <sc-for list="{{ rows }}" as="r" hint-placeholder-count="12">
         <div onClick="{{ r.toggle }}" style="display:grid;grid-template-columns:minmax(280px,1fr) 150px 210px 110px 150px 110px;gap:16px;padding:{{ r.padY }} 24px;border-bottom:1px solid var(--soft);align-items:center;background:{{ r.bg }};cursor:{{ r.cursor }};font-size:{{ r.fontSize }}">
@@ -176,92 +196,173 @@ body{margin:0;background:var(--bg)}a{color:var(--accent)}a:hover{color:var(--ink
       </div>
     </div>
   </div>
-  <div style="margin:12px 32px 0;display:flex;flex-wrap:wrap;gap:8px 20px;font-size:12.5px;color:var(--mute);align-items:center">
-    <div style="display:flex;gap:6px;align-items:center"><span style="background:var(--red);color:#fff;font-weight:700;border-radius:6px;padding:1px 7px">0</span>продажі були й зникли: перевірити джерело</div>
-    <div style="display:flex;gap:6px;align-items:center"><span style="border:1px dashed var(--dash);border-radius:6px;padding:1px 7px;color:var(--faint)">немає даних</span>джерело тоді ще не було підключене</div>
-    <div>{{ segNote }}</div>
-    <div>Сайт: джерело покупця оновлюється раз на тиждень, останні дні тимчасово в «не визначено», нулі за ці дні червоним не позначаються</div>
-  </div>
   </sc-if>
   <sc-if value="{{ tabProducts }}" hint-placeholder-val="{{ false }}">
-  <div style="padding:20px 32px 0;display:flex;flex-wrap:wrap;gap:8px 24px;align-items:baseline;justify-content:space-between">
+  <div style="padding:20px clamp(12px,3vw,32px) 0;display:flex;flex-wrap:wrap;gap:8px 24px;align-items:baseline;justify-content:space-between">
     <div style="font-size:15px"><span style="font-weight:600">{{ periodCur }}</span><span style="color:var(--mute)">, порівняння з {{ periodPrev }}</span></div>
     <div style="color:var(--mute);font-size:13px">{{ updatedText }}</div>
   </div>
-  <div style="margin:16px 32px 0;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow-x:auto">
-    <div style="min-width:{{ pMinW }}">
-      <div style="display:grid;grid-template-columns:{{ pGrid }};gap:12px;padding:12px 24px;border-bottom:1px solid var(--line);font-size:12.5px;align-items:end">
-        <sc-for list="{{ pCols }}" as="col" hint-placeholder-count="11">
-          <div onClick="{{ col.sort }}" style="text-align:{{ col.align }};cursor:pointer;color:{{ col.fg }};font-weight:{{ col.weight }};user-select:none">{{ col.label }} <span style="font-size:10px">{{ col.arrow }}</span><div style="font-size:11px;color:var(--faint);font-weight:400;min-height:14px">{{ col.sub }}</div></div>
+  <div style="margin:16px clamp(12px,3vw,32px) 0;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+    <button onClick="{{ pAll.pick }}" style="border:1px solid var(--line);border-radius:8px;padding:7px 12px;font:500 13px 'Onest',sans-serif;cursor:pointer;background:var(--card);color:var(--mid)">{{ pAll.label }}</button>
+  </div>
+  <div style="margin:12px clamp(12px,3vw,32px) 0;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow-x:auto">
+    <div style="min-width:1040px">
+      <div style="display:grid;grid-template-columns:minmax(240px,1fr) 96px 110px 110px 120px 64px 110px 84px;gap:12px;padding:12px 24px;border-bottom:1px solid var(--line);font-size:12.5px;align-items:end">
+        <sc-for list="{{ pCols }}" as="col" hint-placeholder-count="8">
+          <div onClick="{{ col.sort }}" style="text-align:{{ col.align }};cursor:pointer;color:{{ col.fg }};font-weight:{{ col.weight }};user-select:none">{{ col.label }} <span style="font-size:10px">{{ col.arrow }}</span><sc-if value="{{ col.tipHas }}" hint-placeholder-val="{{ false }}"><span onMouseEnter="{{ col.tip.on }}" onMouseLeave="{{ col.tip.off }}" onClick="{{ col.tip.click }}" style="display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;box-sizing:border-box;border-radius:50%;border:1px solid var(--dash);color:var(--faint);font:600 10px 'Onest',sans-serif;font-style:normal;cursor:help;vertical-align:middle;margin-left:6px;flex:none;user-select:none;text-align:center">i<sc-if value="{{ col.tip.open }}" hint-placeholder-val="{{ false }}"><span style="position:fixed;left:{{ tipX }};top:{{ tipY }};transform:{{ tipT }};z-index:1000;box-sizing:border-box;width:max-content;max-width:300px;background:var(--ink);color:var(--card);font:400 12.5px/1.45 'Onest',sans-serif;padding:9px 12px;border-radius:8px;box-shadow:0 6px 20px var(--shadow);text-align:left;white-space:normal;cursor:default">{{ col.tipText }}</span></sc-if></span></sc-if><div style="font-size:11px;color:var(--faint);font-weight:400;min-height:14px">{{ col.sub }}</div></div>
         </sc-for>
       </div>
       <sc-for list="{{ pRows }}" as="p" hint-placeholder-count="12">
-        <div style="display:grid;grid-template-columns:{{ pGrid }};gap:12px;padding:{{ padY }} 24px;border-bottom:1px solid var(--soft);align-items:center;background:{{ p.bg }}">
-          <div style="min-width:0"><div style="font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ p.name }}</div><div style="font-size:11.5px;color:var(--faint)">{{ p.code }}</div></div>
-          <div style="text-align:right">{{ p.units }} <span style="color:var(--faint);font-size:12px">· {{ p.prevUnits }}</span></div>
+        <div onClick="{{ p.toggle }}" style="display:grid;grid-template-columns:minmax(240px,1fr) 96px 110px 110px 120px 64px 110px 84px;gap:12px;padding:{{ p.padY }} 24px;border-bottom:1px solid var(--soft);align-items:center;background:{{ p.bg }};cursor:{{ p.cursor }};font-size:{{ p.fontSize }}">
+          <div style="display:flex;align-items:center;gap:8px;min-width:0;padding-left:{{ p.indent }}"><span style="width:14px;flex:none;color:var(--faint);font-size:10px;display:inline-block;transform:{{ p.chevRot }};opacity:{{ p.chevOpacity }}">▶</span><div style="min-width:0"><div style="font-weight:{{ p.weight }};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ p.name }}</div><sc-if value="{{ p.code }}" hint-placeholder-val="{{ true }}"><div style="font-size:11.5px;color:var(--faint)">{{ p.code }}</div></sc-if></div></div>
+          <div style="text-align:right">{{ p.units }} <span style="color:var(--faint);font-size:12px">{{ p.prevUnits }}</span></div>
           <div style="text-align:right;font-weight:600">
             <sc-if value="{{ p.isZero }}" hint-placeholder-val="{{ false }}"><span style="background:var(--red);color:#fff;font-weight:700;border-radius:8px;padding:3px 10px">{{ p.sum }}</span></sc-if>
             <sc-if value="{{ p.notZero }}" hint-placeholder-val="{{ true }}">{{ p.sum }}</sc-if>
           </div>
-          <sc-for list="{{ p.ch }}" as="c" hint-placeholder-count="6">
-            <div title="{{ c.title }}" style="text-align:right;color:{{ c.fg }};font-weight:{{ c.weight }}">{{ c.text }}</div>
-          </sc-for>
+          <div style="text-align:right">{{ p.price }}</div>
+          <div style="text-align:right;font-weight:600;color:{{ p.pfFg }};font-size:{{ p.pfSize }}">{{ p.profit }}</div>
+          <div style="text-align:right;color:var(--mute)">{{ p.margin }}</div>
           <div style="text-align:right;color:var(--mid)">{{ p.prev }}</div>
           <div style="text-align:right"><span style="background:{{ p.deltaBg }};color:{{ p.deltaFg }};font-weight:600;border-radius:8px;padding:3px 9px;white-space:nowrap">{{ p.delta }}</span></div>
         </div>
       </sc-for>
-      <div style="display:grid;grid-template-columns:{{ pGrid }};gap:12px;padding:14px 24px;align-items:center;font-weight:700;background:var(--card2)">
-        <div>Разом</div>
+      <div style="display:grid;grid-template-columns:minmax(240px,1fr) 96px 110px 110px 120px 64px 110px 84px;gap:12px;padding:14px 24px;align-items:center;font-weight:700;background:var(--card2)">
+        <div style="padding-left:22px">Разом</div>
         <div style="text-align:right">{{ pTotal.units }} <span style="color:var(--faint);font-size:12px;font-weight:400">· {{ pTotal.prevUnits }}</span></div>
         <div style="text-align:right">{{ pTotal.sum }}</div>
-        <sc-for list="{{ pTotal.ch }}" as="c" hint-placeholder-count="6"><div style="text-align:right">{{ c }}</div></sc-for>
+        <div></div>
+        <div style="text-align:right">{{ pTotal.profit }}</div>
+        <div style="text-align:right;font-weight:500;color:var(--mute)">{{ pTotal.margin }}</div>
         <div style="text-align:right;font-weight:500;color:var(--mid)">{{ pTotal.prev }}</div>
         <div style="text-align:right"><span style="background:{{ pTotal.deltaBg }};color:{{ pTotal.deltaFg }};font-weight:600;border-radius:8px;padding:3px 9px;white-space:nowrap">{{ pTotal.delta }}</span></div>
       </div>
     </div>
   </div>
-  <div style="margin:12px 32px 0;display:flex;flex-wrap:wrap;gap:8px 20px;font-size:12.5px;color:var(--mute);align-items:center">
-    <div>У стовпцях каналів: продано штук. Натисніть на заголовок стовпця, щоб відсортувати.</div>
-    <div style="display:flex;gap:6px;align-items:center"><span style="color:var(--red);font-weight:700">0</span>минулого місяця продажі були, зараз немає</div>
-  </div>
   </sc-if>
-  <sc-if value="{{ tabPrices }}" hint-placeholder-val="{{ false }}">
-  <div style="padding:20px 32px 0;display:flex;flex-wrap:wrap;gap:8px 24px;align-items:baseline;justify-content:space-between">
-    <div style="font-size:15px"><span style="font-weight:600">{{ periodCur }}</span><span style="color:var(--mute)"> · середня фактична ціна продажу і темп</span></div>
-    <div style="color:var(--mute);font-size:13px">{{ updatedText }}</div>
+  <sc-if value="{{ tabPeriod }}" hint-placeholder-val="{{ false }}">
+  <div style="margin:20px clamp(12px,3vw,32px) 0;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 20px;display:flex;flex-wrap:wrap;gap:12px 22px;align-items:center">
+    <div style="display:flex;flex-wrap:wrap;gap:6px">
+      <sc-for list="{{ z.presets }}" as="s" hint-placeholder-count="5">
+        <button onClick="{{ s.pick }}" style="border:1px solid {{ s.line }};border-radius:8px;padding:7px 12px;font:500 13px 'Onest',sans-serif;cursor:pointer;background:{{ s.bg }};color:{{ s.fg }};white-space:nowrap">{{ s.label }}</button>
+      </sc-for>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;color:var(--mute)">
+      <label style="display:flex;align-items:center;gap:8px"><span>з</span><input type="date" value="{{ z.from }}" min="{{ z.min }}" max="{{ z.max }}" onChange="{{ z.setFrom }}" style="border:1px solid {{ z.inputLine }};border-radius:8px;padding:6px 10px;font:500 13px 'Onest',sans-serif;background:var(--card);color:var(--ink);color-scheme:{{ z.scheme }}"></label>
+      <label style="display:flex;align-items:center;gap:8px"><span>по</span><input type="date" value="{{ z.to }}" min="{{ z.min }}" max="{{ z.max }}" onChange="{{ z.setTo }}" style="border:1px solid {{ z.inputLine }};border-radius:8px;padding:6px 10px;font:500 13px 'Onest',sans-serif;background:var(--card);color:var(--ink);color-scheme:{{ z.scheme }}"></label>
+    </div>
+    <div style="font-size:12.5px;color:var(--faint)">{{ z.dataFromText }}</div>
   </div>
-  <div style="margin:16px 32px 0;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow-x:auto">
-    <div style="min-width:{{ prMinW }}">
-      <div style="display:grid;grid-template-columns:{{ prGrid }};gap:16px;padding:12px 24px;border-bottom:1px solid var(--line);font-size:12.5px;color:var(--mute);align-items:end">
-        <div>Товар</div>
-        <sc-for list="{{ prCols }}" as="col" hint-placeholder-count="6"><div style="text-align:right">{{ col }}<div style="font-size:11px;color:var(--faint)">ціна з ПДВ · шт/тиждень</div></div></sc-for>
-      </div>
-      <sc-for list="{{ prRows }}" as="p" hint-placeholder-count="12">
-        <div style="display:grid;grid-template-columns:{{ prGrid }};gap:16px;padding:{{ padY }} 24px;border-bottom:1px solid var(--soft);align-items:center">
-          <div style="min-width:0"><div style="font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ p.name }}</div><div style="font-size:11.5px;color:var(--faint)">{{ p.code }}</div></div>
-          <sc-for list="{{ p.ch }}" as="c" hint-placeholder-count="6">
-            <div style="text-align:right"><span style="font-weight:600">{{ c.price }}</span><div style="font-size:12px;color:var(--faint)">{{ c.pace }}</div></div>
-          </sc-for>
-        </div>
+  <div style="margin:16px clamp(12px,3vw,32px) 0;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 28px;display:flex;flex-wrap:wrap;gap:16px 48px;align-items:flex-end">
+    <div><div style="color:var(--mute);font-size:13px">Продажі за період · {{ z.periodText }}</div><div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap"><div style="font-size:38px;font-weight:700;letter-spacing:-0.02em;line-height:1.1">{{ z.net }}</div><div style="color:var(--faint);font-size:12px">без ПДВ</div></div></div>
+    <div><div style="font-size:24px;font-weight:700">{{ z.orders }}</div><div style="color:var(--mute);font-size:13px">замовлень</div></div>
+    <div><div style="font-size:24px;font-weight:700">{{ z.units }}</div><div style="color:var(--mute);font-size:13px">штук</div></div>
+    <div><div style="font-size:24px;font-weight:700">{{ z.days }}</div><div style="color:var(--mute);font-size:13px">днів у періоді</div></div>
+    <div><div style="font-size:24px;font-weight:700">{{ z.profit }}</div><div style="color:var(--mute);font-size:13px;display:flex;align-items:center">валовий прибуток<span onMouseEnter="{{ tips.zProfit.on }}" onMouseLeave="{{ tips.zProfit.off }}" onClick="{{ tips.zProfit.click }}" style="display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;box-sizing:border-box;border-radius:50%;border:1px solid var(--dash);color:var(--faint);font:600 10px 'Onest',sans-serif;font-style:normal;cursor:help;vertical-align:middle;margin-left:6px;flex:none;user-select:none;text-align:center">i<sc-if value="{{ tips.zProfit.open }}" hint-placeholder-val="{{ false }}"><span style="position:fixed;left:{{ tipX }};top:{{ tipY }};transform:{{ tipT }};z-index:1000;box-sizing:border-box;width:max-content;max-width:300px;background:var(--ink);color:var(--card);font:400 12.5px/1.45 'Onest',sans-serif;padding:9px 12px;border-radius:8px;box-shadow:0 6px 20px var(--shadow);text-align:left;white-space:normal;cursor:default">Валовий прибуток: продажі без ПДВ мінус собівартість товару. До комісій, доставки й реклами. Якщо для товару немає собівартості, він у прибуток не входить.</span></sc-if></span></div></div>
+    <div><div style="font-size:24px;font-weight:700">{{ z.margin }}</div><div style="color:var(--mute);font-size:13px;display:flex;align-items:center">маржа<span onMouseEnter="{{ tips.zMargin.on }}" onMouseLeave="{{ tips.zMargin.off }}" onClick="{{ tips.zMargin.click }}" style="display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;box-sizing:border-box;border-radius:50%;border:1px solid var(--dash);color:var(--faint);font:600 10px 'Onest',sans-serif;font-style:normal;cursor:help;vertical-align:middle;margin-left:6px;flex:none;user-select:none;text-align:center">i<sc-if value="{{ tips.zMargin.open }}" hint-placeholder-val="{{ false }}"><span style="position:fixed;left:{{ tipX }};top:{{ tipY }};transform:{{ tipT }};z-index:1000;box-sizing:border-box;width:max-content;max-width:300px;background:var(--ink);color:var(--card);font:400 12.5px/1.45 'Onest',sans-serif;padding:9px 12px;border-radius:8px;box-shadow:0 6px 20px var(--shadow);text-align:left;white-space:normal;cursor:default">Валова маржа: валовий прибуток, поділений на продажі без ПДВ. Це частка в ціні, а не націнка: продали за 100 zł, собівартість 40 zł, маржа 60%, націнка 150%.</span></sc-if></span></div></div>
+  </div>
+  <sc-if value="{{ z.noCost }}" hint-placeholder-val="{{ false }}"><div style="margin:10px clamp(12px,3vw,32px) 0;font-size:12.5px;color:var(--amber)">{{ z.noCost }}</div></sc-if>
+  <div style="margin:24px clamp(12px,3vw,32px) 0;display:flex">
+    <div style="display:flex;gap:2px;background:var(--soft2);border-radius:10px;padding:3px">
+      <sc-for list="{{ z.views }}" as="s" hint-placeholder-count="2">
+        <button onClick="{{ s.pick }}" style="border:0;border-radius:8px;padding:7px 14px;font:500 13px 'Onest',sans-serif;cursor:pointer;background:{{ s.bg }};color:{{ s.fg }};box-shadow:{{ s.shadow }}">{{ s.label }}</button>
       </sc-for>
     </div>
   </div>
-  <div style="margin:12px 32px 0;font-size:12.5px;color:var(--mute)">Середня фактична ціна: сума продажів з ПДВ, поділена на кількість проданих штук на цьому каналі. Темп: штук на тиждень за {{ periodCur }}.</div>
+  <sc-if value="{{ z.empty }}" hint-placeholder-val="{{ false }}">
+    <div style="margin:16px clamp(12px,3vw,32px) 0;border:1px dashed var(--dash);border-radius:12px;padding:28px 20px;text-align:center;color:var(--mid);background:var(--card2);font-size:15px">За цей період продажів немає</div>
+  </sc-if>
+  <sc-if value="{{ z.showSrc }}" hint-placeholder-val="{{ true }}">
+  <sc-if value="{{ z.adNote }}" hint-placeholder-val="{{ false }}"><div style="margin:12px clamp(12px,3vw,32px) 0;font-size:12.5px;color:var(--mute)">{{ z.adNote }}</div></sc-if>
+  <div style="margin:16px clamp(12px,3vw,32px) 0;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow-x:auto">
+    <div style="min-width:1050px">
+      <div style="display:grid;grid-template-columns:minmax(150px,1fr) 112px 56px 80px 50px 112px 56px 100px 112px 80px;gap:12px;padding:12px 24px;border-bottom:1px solid var(--line);color:var(--mute);font-size:12.5px;align-items:end">
+        <div style="display:flex;align-items:center">Джерело<span onMouseEnter="{{ tips.zSrc.on }}" onMouseLeave="{{ tips.zSrc.off }}" onClick="{{ tips.zSrc.click }}" style="display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;box-sizing:border-box;border-radius:50%;border:1px solid var(--dash);color:var(--faint);font:600 10px 'Onest',sans-serif;font-style:normal;cursor:help;vertical-align:middle;margin-left:6px;flex:none;user-select:none;text-align:center">i<sc-if value="{{ tips.zSrc.open }}" hint-placeholder-val="{{ false }}"><span style="position:fixed;left:{{ tipX }};top:{{ tipY }};transform:{{ tipT }};z-index:1000;box-sizing:border-box;width:max-content;max-width:300px;background:var(--ink);color:var(--card);font:400 12.5px/1.45 'Onest',sans-serif;padding:9px 12px;border-radius:8px;box-shadow:0 6px 20px var(--shadow);text-align:left;white-space:normal;cursor:default">Натисніть на рядок, щоб розкрити країни або джерела. Кнопка «товари» показує, що продано в цьому рядку.</span></sc-if></span></div><div style="text-align:right">Продажі <span style="font-size:11px;color:var(--faint)">без ПДВ</span></div><div style="text-align:right">Частка</div><div style="text-align:right">Замовлень</div><div style="text-align:right">Штук</div><div style="text-align:right">Валовий прибуток</div><div style="text-align:right">Маржа</div><div style="text-align:right">Реклама</div><div style="text-align:right">Після реклами</div><div></div>
+      </div>
+      <sc-for list="{{ z.srcRows }}" as="r" hint-placeholder-count="6">
+        <sc-if value="{{ r.isRow }}" hint-placeholder-val="{{ true }}">
+          <div onClick="{{ r.toggle }}" style="display:grid;grid-template-columns:minmax(150px,1fr) 112px 56px 80px 50px 112px 56px 100px 112px 80px;gap:12px;padding:{{ padY }} 24px;border-bottom:1px solid var(--soft);align-items:center;background:{{ r.bg }};cursor:pointer">
+            <div style="display:flex;align-items:center;gap:8px;padding-left:{{ r.indent }};min-width:0"><span style="width:14px;flex:none;color:var(--faint);font-size:10px;display:inline-block;transform:{{ r.chevRot }};opacity:{{ r.chevOpacity }}">▶</span><span style="font-weight:{{ r.weight }};white-space:nowrap">{{ r.name }}</span></div>
+            <div style="text-align:right;font-weight:600">{{ r.net }}</div>
+            <div style="text-align:right;color:var(--mute)">{{ r.share }}</div>
+            <div style="text-align:right">{{ r.orders }}</div>
+            <div style="text-align:right">{{ r.units }}</div>
+            <div style="text-align:right;color:{{ r.pfFg }};font-size:{{ r.pfSize }}">{{ r.profit }}</div><div style="text-align:right;color:var(--mute)">{{ r.margin }}</div><div style="text-align:right">{{ r.ad }}</div><div style="text-align:right;font-weight:600">{{ r.after }}</div><div style="text-align:right"><button onClick="{{ r.toggleItems }}" style="border:1px solid var(--line);border-radius:8px;padding:4px 10px;font:500 12px 'Onest',sans-serif;cursor:pointer;background:{{ r.btnBg }};color:{{ r.btnFg }};white-space:nowrap">{{ r.btnLabel }}</button></div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ r.isSub }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:8px 24px 16px {{ r.indent }};background:var(--card2);border-bottom:1px solid var(--soft)">
+            <div style="border:1px solid var(--line);border-radius:10px;background:var(--card);overflow:hidden">
+              <div style="display:grid;grid-template-columns:minmax(150px,1fr) 50px 110px 110px 110px 56px;gap:12px;padding:9px 16px;border-bottom:1px solid var(--line);color:var(--mute);font-size:12px">
+                <div>{{ r.title }}</div><div style="text-align:right">Штук</div><div style="text-align:right">Продажі <span style="font-size:11px;color:var(--faint)">без ПДВ</span></div><div style="text-align:right">Середня ціна <span style="font-size:11px;color:var(--faint)">з ПДВ</span></div><div style="text-align:right">Валовий прибуток</div><div style="text-align:right">Маржа</div>
+              </div>
+              <sc-for list="{{ r.items }}" as="p" hint-placeholder-count="3">
+                <div style="display:grid;grid-template-columns:minmax(150px,1fr) 50px 110px 110px 110px 56px;gap:12px;padding:8px 16px;border-bottom:1px solid var(--soft);align-items:center;font-size:13px">
+                  <div style="min-width:0"><div style="font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ p.name }}</div><div style="font-size:11.5px;color:var(--faint)">{{ p.code }}</div></div><div style="text-align:right">{{ p.units }}</div><div style="text-align:right;font-weight:600">{{ p.net }}</div><div style="text-align:right">{{ p.price }}</div><div style="text-align:right;color:{{ p.pfFg }};font-size:{{ p.pfSize }}">{{ p.profit }}</div><div style="text-align:right;color:var(--mute)">{{ p.margin }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+      </sc-for>
+      <div style="display:grid;grid-template-columns:minmax(150px,1fr) 112px 56px 80px 50px 112px 56px 100px 112px 80px;gap:12px;padding:14px 24px;align-items:center;font-weight:700;background:var(--card2)">
+        <div style="padding-left:22px">Разом</div><div style="text-align:right">{{ z.net }}</div><div style="text-align:right">100%</div><div style="text-align:right">{{ z.orders }}</div><div style="text-align:right">{{ z.units }}</div><div style="text-align:right;color:{{ z.pfFg }};font-size:{{ z.pfSize }}">{{ z.profit }}</div><div style="text-align:right;color:var(--mute)">{{ z.margin }}</div><div style="text-align:right">{{ z.ad }}</div><div style="text-align:right">{{ z.after }}</div><div></div>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+  <sc-if value="{{ z.showProd }}" hint-placeholder-val="{{ false }}">
+  <div style="margin:16px clamp(12px,3vw,32px) 0;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow-x:auto">
+    <div style="min-width:840px">
+      <div style="display:grid;grid-template-columns:minmax(180px,1fr) 60px 120px 60px 120px 120px 60px;gap:12px;padding:12px 24px;border-bottom:1px solid var(--line);font-size:12.5px;align-items:end">
+        <sc-for list="{{ z.prodCols }}" as="col" hint-placeholder-count="5">
+          <div onClick="{{ col.sort }}" style="text-align:{{ col.align }};cursor:pointer;color:{{ col.fg }};font-weight:{{ col.weight }};user-select:none"><span>{{ col.label }}</span> <span style="font-size:11px;color:var(--faint);font-weight:400">{{ col.sub }}</span> <span style="font-size:10px">{{ col.arrow }}</span><sc-if value="{{ col.tipHas }}" hint-placeholder-val="{{ false }}"><span onMouseEnter="{{ col.tip.on }}" onMouseLeave="{{ col.tip.off }}" onClick="{{ col.tip.click }}" style="display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;box-sizing:border-box;border-radius:50%;border:1px solid var(--dash);color:var(--faint);font:600 10px 'Onest',sans-serif;font-style:normal;cursor:help;vertical-align:middle;margin-left:6px;flex:none;user-select:none;text-align:center">i<sc-if value="{{ col.tip.open }}" hint-placeholder-val="{{ false }}"><span style="position:fixed;left:{{ tipX }};top:{{ tipY }};transform:{{ tipT }};z-index:1000;box-sizing:border-box;width:max-content;max-width:300px;background:var(--ink);color:var(--card);font:400 12.5px/1.45 'Onest',sans-serif;padding:9px 12px;border-radius:8px;box-shadow:0 6px 20px var(--shadow);text-align:left;white-space:normal;cursor:default">{{ col.tipText }}</span></sc-if></span></sc-if></div>
+        </sc-for>
+      </div>
+      <sc-for list="{{ z.prodRows }}" as="p" hint-placeholder-count="8">
+        <sc-if value="{{ p.isRow }}" hint-placeholder-val="{{ true }}">
+          <div onClick="{{ p.toggle }}" style="display:grid;grid-template-columns:minmax(180px,1fr) 60px 120px 60px 120px 120px 60px;gap:12px;padding:{{ padY }} 24px;border-bottom:1px solid var(--soft);align-items:center;cursor:pointer">
+            <div style="display:flex;align-items:center;gap:8px;min-width:0"><span style="width:14px;flex:none;color:var(--faint);font-size:10px;display:inline-block;transform:{{ p.chevRot }}">▶</span><div style="min-width:0"><div style="font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ p.name }}</div><div style="font-size:11.5px;color:var(--faint)">{{ p.code }}</div></div></div>
+            <div style="text-align:right">{{ p.units }}</div>
+            <div style="text-align:right;font-weight:600">{{ p.net }}</div>
+            <div style="text-align:right;color:var(--mute)">{{ p.share }}</div>
+            <div style="text-align:right">{{ p.price }}</div><div style="text-align:right;color:{{ p.pfFg }};font-size:{{ p.pfSize }}">{{ p.profit }}</div><div style="text-align:right;color:var(--mute)">{{ p.margin }}</div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ p.isSub }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:8px 24px 16px 46px;background:var(--card2);border-bottom:1px solid var(--soft)">
+            <div style="border:1px solid var(--line);border-radius:10px;background:var(--card);overflow:hidden">
+              <div style="display:grid;grid-template-columns:100px minmax(110px,1fr) 50px 110px 110px 110px 56px;gap:12px;padding:9px 16px;border-bottom:1px solid var(--line);color:var(--mute);font-size:12px">
+                <div>Канал</div><div>Країна або джерело</div><div style="text-align:right">Штук</div><div style="text-align:right">Продажі <span style="font-size:11px;color:var(--faint)">без ПДВ</span></div><div style="text-align:right">Середня ціна <span style="font-size:11px;color:var(--faint)">з ПДВ</span></div><div style="text-align:right">Валовий прибуток</div><div style="text-align:right">Маржа</div>
+              </div>
+              <sc-for list="{{ p.items }}" as="s" hint-placeholder-count="2">
+                <div style="display:grid;grid-template-columns:100px minmax(110px,1fr) 50px 110px 110px 110px 56px;gap:12px;padding:8px 16px;border-bottom:1px solid var(--soft);align-items:center;font-size:13px">
+                  <div style="font-weight:500">{{ s.channel }}</div><div style="color:var(--mid)">{{ s.sub }}</div><div style="text-align:right">{{ s.units }}</div><div style="text-align:right;font-weight:600">{{ s.net }}</div><div style="text-align:right">{{ s.price }}</div><div style="text-align:right;color:{{ s.pfFg }};font-size:{{ s.pfSize }}">{{ s.profit }}</div><div style="text-align:right;color:var(--mute)">{{ s.margin }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+      </sc-for>
+    </div>
+  </div>
+  </sc-if>
   </sc-if>
   <sc-if value="{{ tabAds }}" hint-placeholder-val="{{ false }}">
-  <div style="padding:20px 32px 0;display:flex;flex-wrap:wrap;gap:8px 24px;align-items:baseline;justify-content:space-between">
-    <div style="font-size:15px"><span style="font-weight:600">Останні 4 тижні разом</span><span style="color:var(--mute)"> · {{ adPeriod }}, тижні з понеділка по неділю</span></div>
+  <div style="padding:20px clamp(12px,3vw,32px) 0;display:flex;flex-wrap:wrap;gap:8px 24px;align-items:baseline;justify-content:space-between">
+    <div style="font-size:15px"><span style="font-weight:600">Останні 4 завершені тижні</span><span onMouseEnter="{{ tips.adTitle.on }}" onMouseLeave="{{ tips.adTitle.off }}" onClick="{{ tips.adTitle.click }}" style="display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;box-sizing:border-box;border-radius:50%;border:1px solid var(--dash);color:var(--faint);font:600 10px 'Onest',sans-serif;font-style:normal;cursor:help;vertical-align:middle;margin-left:6px;flex:none;user-select:none;text-align:center">i<sc-if value="{{ tips.adTitle.open }}" hint-placeholder-val="{{ false }}"><span style="position:fixed;left:{{ tipX }};top:{{ tipY }};transform:{{ tipT }};z-index:1000;box-sizing:border-box;width:max-content;max-width:300px;background:var(--ink);color:var(--card);font:400 12.5px/1.45 'Onest',sans-serif;padding:9px 12px;border-radius:8px;box-shadow:0 6px 20px var(--shadow);text-align:left;white-space:normal;cursor:default">Реклама рахується календарними тижнями з понеділка по неділю, як у файлі Allegro Ads. Тижні без файлу в підсумок не входять. Продажі від реклами Allegro дораховує ще один-два тижні.</span></sc-if></span><span style="color:var(--mute)"> · {{ adPeriod }}</span></div>
     <div style="color:var(--mute);font-size:13px">{{ adFile }}</div>
   </div>
-  <div style="margin:16px 32px 0;background:var(--warnbg);border:1px solid var(--warnline);border-radius:12px;padding:14px 20px;font-size:15px;font-weight:600;color:var(--warnfg);display:flex;gap:12px;align-items:center">
-    <span style="flex:none;width:22px;height:22px;border-radius:50%;background:var(--warnfg);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px">!</span>
-    <span>Останній тиждень неповний: продажі від реклами доганяють один-два тижні</span>
-  </div>
-  <div style="margin:16px 32px 0;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px 28px;display:flex;flex-wrap:wrap;gap:28px 40px">
+  <sc-if value="{{ adCatch }}" hint-placeholder-val="{{ true }}"><div style="margin:16px clamp(12px,3vw,32px) 0;background:var(--warnbg);border:1px solid var(--warnline);border-radius:12px;padding:14px 20px;font-size:15px;font-weight:600;color:var(--warnfg);display:flex;gap:12px;align-items:center">
+    <span style="flex:none;width:22px;height:22px;border-radius:50%;background:var(--warnfg);color:var(--warnbg);display:flex;align-items:center;justify-content:center;font-size:14px">!</span>
+    <span>Продажі від реклами за останній тиждень ще доганяють: Allegro дораховує їх один-два тижні</span>
+  </div></sc-if>
+  <div style="margin:16px clamp(12px,3vw,32px) 0;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px 28px;display:flex;flex-wrap:wrap;gap:28px 40px">
     <div style="flex:0 1 270px;min-width:230px;display:flex;flex-direction:column;gap:16px">
       <div><div style="color:var(--mute);font-size:13px">Витрати на рекламу</div><div style="display:flex;align-items:baseline;gap:8px"><div style="font-size:34px;font-weight:700;letter-spacing:-0.02em">{{ adTotal.spend }}</div><div style="color:var(--faint);font-size:12px">без ПДВ</div></div></div>
       <div><div style="color:var(--mute);font-size:13px">Продажі від реклами</div><div style="display:flex;align-items:baseline;gap:8px"><div style="font-size:34px;font-weight:700;letter-spacing:-0.02em">{{ adTotal.sales }}</div><div style="color:var(--faint);font-size:12px">без ПДВ</div></div></div>
-      <div><div style="color:var(--mute);font-size:13px">Частка витрат у продажах</div><div style="font-size:24px;font-weight:700">{{ adTotal.share }}</div></div>
+      <div><div style="color:var(--mute);font-size:13px;display:flex;align-items:center">Частка витрат<span onMouseEnter="{{ tips.adShare.on }}" onMouseLeave="{{ tips.adShare.off }}" onClick="{{ tips.adShare.click }}" style="display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;box-sizing:border-box;border-radius:50%;border:1px solid var(--dash);color:var(--faint);font:600 10px 'Onest',sans-serif;font-style:normal;cursor:help;vertical-align:middle;margin-left:6px;flex:none;user-select:none;text-align:center">i<sc-if value="{{ tips.adShare.open }}" hint-placeholder-val="{{ false }}"><span style="position:fixed;left:{{ tipX }};top:{{ tipY }};transform:{{ tipT }};z-index:1000;box-sizing:border-box;width:max-content;max-width:300px;background:var(--ink);color:var(--card);font:400 12.5px/1.45 'Onest',sans-serif;padding:9px 12px;border-radius:8px;box-shadow:0 6px 20px var(--shadow);text-align:left;white-space:normal;cursor:default">Від усіх продажів: витрати, поділені на всі продажі каналу в цій країні за ті самі тижні. Від продажів реклами: витрати, поділені на продажі, які принесла сама реклама.</span></sc-if></span></div><div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap"><span style="font-size:24px;font-weight:700">{{ adTotal.allShare }}</span><span style="color:var(--mute);font-size:13px">від усіх продажів</span></div><div style="color:var(--mute);font-size:13px">{{ adTotal.share }} від продажів реклами</div></div>
+      <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-start"><span style="background:{{ adTotal.limBg }};color:{{ adTotal.limFg }};font-weight:600;border-radius:8px;padding:5px 11px">{{ adTotal.limStatus }}</span><div style="font-size:12.5px;color:var(--mute);display:flex;align-items:center">{{ adTotal.limText }}<span onMouseEnter="{{ tips.adLimit.on }}" onMouseLeave="{{ tips.adLimit.off }}" onClick="{{ tips.adLimit.click }}" style="display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;box-sizing:border-box;border-radius:50%;border:1px solid var(--dash);color:var(--faint);font:600 10px 'Onest',sans-serif;font-style:normal;cursor:help;vertical-align:middle;margin-left:6px;flex:none;user-select:none;text-align:center">i<sc-if value="{{ tips.adLimit.open }}" hint-placeholder-val="{{ false }}"><span style="position:fixed;left:{{ tipX }};top:{{ tipY }};transform:{{ tipT }};z-index:1000;box-sizing:border-box;width:max-content;max-width:300px;background:var(--ink);color:var(--card);font:400 12.5px/1.45 'Onest',sans-serif;padding:9px 12px;border-radius:8px;box-shadow:0 6px 20px var(--shadow);text-align:left;white-space:normal;cursor:default">На рекламу можна витрачати не більше {{ adTotal.limPct }} від усіх продажів каналу в цій країні. Зелений: у межах ліміту, червоний: витрачаємо забагато.</span></sc-if></span></div></div>
       <div style="display:flex;flex-direction:column;gap:6px;margin-top:auto;font-size:12.5px;color:var(--mid)">
         <div style="display:flex;align-items:center;gap:8px"><span style="width:14px;height:14px;border-radius:3px;background:var(--accent)"></span>продажі від реклами</div>
         <div style="display:flex;align-items:center;gap:8px"><span style="width:8px;height:14px;border-radius:2px;background:var(--ink);margin:0 3px"></span>витрати на рекламу</div>
@@ -272,8 +373,9 @@ body{margin:0;background:var(--bg)}a{color:var(--accent)}a:hover{color:var(--ink
       <div style="display:flex;gap:16px;align-items:flex-end;border-bottom:1px solid var(--axis);height:226px;padding:0 8px">
         <sc-for list="{{ adWeeks }}" as="w" hint-placeholder-count="4">
           <div style="flex:1;display:flex;justify-content:center;align-items:flex-end;gap:8px;opacity:{{ w.op }}">
-            <div style="display:flex;flex-direction:column;align-items:center;gap:5px;width:64px"><div style="font-weight:700;font-size:13px;white-space:nowrap">{{ w.sales }}</div><div style="width:100%;height:{{ w.salesH }};background:var(--accent);border-radius:6px 6px 0 0"></div></div>
-            <div style="display:flex;flex-direction:column;align-items:center;gap:5px;width:36px"><div style="font-size:12px;color:var(--mid);white-space:nowrap">{{ w.spend }}</div><div style="width:22px;height:{{ w.spendH }};background:var(--ink);border-radius:4px 4px 0 0"></div></div>
+            <sc-if value="{{ w.has }}" hint-placeholder-val="{{ true }}"><div style="display:flex;flex-direction:column;align-items:center;gap:5px;width:64px"><div style="font-weight:700;font-size:13px;white-space:nowrap">{{ w.sales }}</div><div style="width:100%;height:{{ w.salesH }};background:var(--accent);border-radius:6px 6px 0 0"></div></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:5px;width:36px"><div style="font-size:12px;color:var(--mid);white-space:nowrap">{{ w.spend }}</div><div style="width:22px;height:{{ w.spendH }};background:var(--ink);border-radius:4px 4px 0 0"></div></div></sc-if>
+            <sc-if value="{{ w.none }}" hint-placeholder-val="{{ false }}"><div style="margin-bottom:10px;font-size:12.5px;color:var(--faint);border:1px dashed var(--dash);border-radius:6px;padding:3px 9px;white-space:nowrap">немає файлу</div></sc-if>
           </div>
         </sc-for>
       </div>
@@ -282,102 +384,126 @@ body{margin:0;background:var(--bg)}a{color:var(--accent)}a:hover{color:var(--ink
       </div>
     </div>
   </div>
-  <div style="margin:16px 32px 0;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow-x:auto">
-    <div style="min-width:900px">
-      <div style="display:grid;grid-template-columns:minmax(240px,1fr) 140px 150px 120px 110px 160px;gap:16px;padding:12px 24px;border-bottom:1px solid var(--line);color:var(--mute);font-size:12.5px;align-items:end">
+  <div style="margin:16px clamp(12px,3vw,32px) 0;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow-x:auto">
+    <div style="min-width:1120px">
+      <div style="display:grid;grid-template-columns:minmax(220px,1fr) 120px 140px 130px 130px 100px 160px;gap:16px;padding:12px 24px;border-bottom:1px solid var(--line);color:var(--mute);font-size:12.5px;align-items:end">
         <div>Рекламне джерело</div>
         <div style="text-align:right">Витрати <span style="font-size:11px;color:var(--faint)">без ПДВ</span></div>
-        <div style="text-align:right">Продажі <span style="font-size:11px;color:var(--faint)">без ПДВ</span></div>
-        <div style="text-align:right">Частка витрат</div>
-        <div style="text-align:right">Замовлення</div>
-        <div>По тижнях<div style="font-size:10.5px;color:var(--faint);margin-top:2px">4 тижні, останній неповний</div></div>
+        <div style="text-align:right">Продажі від реклами <span style="font-size:11px;color:var(--faint)">без ПДВ</span></div>
+        <div style="text-align:right">Частка витрат<div style="font-size:11px;color:var(--faint)">від продажів реклами</div></div>
+        <div style="text-align:right">Частка витрат<div style="font-size:11px;color:var(--faint)">від усіх продажів</div></div>
+        <div style="text-align:right">Штук<div style="font-size:11px;color:var(--faint)">за даними Allegro Ads</div></div>
+        <div>По тижнях<div style="font-size:10.5px;color:var(--faint);margin-top:2px">4 тижні, сірий: немає файлу</div></div>
       </div>
       <sc-for list="{{ adRows }}" as="r" hint-placeholder-count="8">
-        <div style="display:grid;grid-template-columns:minmax(240px,1fr) 140px 150px 120px 110px 160px;gap:16px;padding:{{ padY }} 24px;border-bottom:1px solid var(--soft);align-items:center">
+        <div style="display:grid;grid-template-columns:minmax(220px,1fr) 120px 140px 130px 130px 100px 160px;gap:16px;padding:{{ padY }} 24px;border-bottom:1px solid var(--soft);align-items:center">
           <div style="font-weight:500">{{ r.name }}</div>
-          <div style="text-align:right">{{ r.spend }}</div>
+          <div style="text-align:right">{{ r.spend }}<sc-if value="{{ r.pending }}" hint-placeholder-val="{{ false }}"><span style="font-size:12px;color:var(--faint);border:1px dashed var(--dash);border-radius:6px;padding:2px 7px;white-space:nowrap">ще не завантажено</span></sc-if></div>
           <div style="text-align:right;font-weight:600">{{ r.sales }}</div>
-          <div style="text-align:right">{{ r.share }}</div>
-          <div style="text-align:right">{{ r.orders }}</div>
+          <div style="text-align:right"><span style="background:{{ r.shareBg }};color:{{ r.shareFg }};font-weight:600;border-radius:8px;padding:3px 9px;white-space:nowrap">{{ r.share }}</span></div>
+          <div style="text-align:right"><span style="background:{{ r.allBg }};color:{{ r.allFg }};font-weight:600;border-radius:8px;padding:3px 9px;white-space:nowrap">{{ r.allShare }}</span></div>
+          <div style="text-align:right">{{ r.units }}</div>
           <div style="display:flex;gap:10px;align-items:flex-end;height:26px">
             <sc-for list="{{ r.weeks }}" as="w" hint-placeholder-count="4">
-              <div title="{{ w.title }}" style="display:flex;gap:2px;align-items:flex-end;height:26px;opacity:{{ w.op }}"><div style="width:12px;height:{{ w.salesH }};background:var(--accent);border-radius:2px 2px 0 0"></div><div style="width:6px;height:{{ w.spendH }};background:var(--ink);border-radius:2px 2px 0 0"></div></div>
+              <div title="{{ w.title }}" style="display:flex;gap:2px;align-items:flex-end;height:26px;opacity:{{ w.op }}"><div style="width:12px;height:{{ w.salesH }};background:{{ w.sBg }};border-radius:2px 2px 0 0"></div><div style="width:6px;height:{{ w.spendH }};background:{{ w.pBg }};border-radius:2px 2px 0 0"></div></div>
             </sc-for>
           </div>
         </div>
       </sc-for>
-      <div style="display:grid;grid-template-columns:minmax(240px,1fr) 140px 150px 120px 110px 160px;gap:16px;padding:14px 24px;align-items:center;font-weight:700;background:var(--card2)">
-        <div>Разом</div><div style="text-align:right">{{ adTotal.spend }}</div><div style="text-align:right">{{ adTotal.sales }}</div><div style="text-align:right">{{ adTotal.share }}</div><div style="text-align:right">{{ adTotal.orders }}</div><div></div>
+      <div style="display:grid;grid-template-columns:minmax(220px,1fr) 120px 140px 130px 130px 100px 160px;gap:16px;padding:14px 24px;align-items:center;font-weight:700;background:var(--card2)">
+        <div>Разом</div><div style="text-align:right">{{ adTotal.spend }}</div><div style="text-align:right">{{ adTotal.sales }}</div><div style="text-align:right">{{ adTotal.share }}</div><div style="text-align:right">{{ adTotal.allShare }}</div><div style="text-align:right">{{ adTotal.units }}</div><div></div>
       </div>
     </div>
   </div>
-  <div style="margin:12px 32px 0;font-size:12.5px;color:var(--mute)">Частка витрат: витрати на рекламу, поділені на продажі від цієї реклами. Що менше, то краще.</div>
   </sc-if>
   <sc-if value="{{ tabProfit }}" hint-placeholder-val="{{ false }}">
-  <div style="padding:20px 32px 0;display:flex;flex-wrap:wrap;gap:8px 24px;align-items:baseline;justify-content:space-between">
+  <div style="padding:20px clamp(12px,3vw,32px) 0;display:flex;flex-wrap:wrap;gap:8px 24px;align-items:baseline;justify-content:space-between">
     <div style="font-size:15px"><span style="font-weight:600">{{ periodCur }}</span><span style="color:var(--mute)">, порівняння з {{ periodPrev }}</span></div>
-    <div style="color:var(--mute);font-size:13px">Блок ще не підключено</div>
+    <div style="color:var(--mute);font-size:13px">{{ updatedText }}</div>
   </div>
-  <div style="margin:16px 32px 0;border:1px dashed var(--dash);border-radius:12px;padding:16px 20px;color:var(--mid);background:var(--card2)"><span style="font-weight:600;color:var(--ink)">Прибуток ще не підключено.</span> Тут буде: продажі мінус собівартість, подарунки окремим рядком зі знаком мінус. Дані з'являться, коли в базі буде собівартість товарів.</div>
-  <div style="margin:16px 32px 0;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow-x:auto">
-    <div style="min-width:760px">
-      <div style="display:grid;grid-template-columns:minmax(260px,1fr) 160px 160px 110px;gap:16px;padding:12px 24px;border-bottom:1px solid var(--line);color:var(--mute);font-size:12.5px">
+  <div style="margin:16px clamp(12px,3vw,32px) 0;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px 28px;display:flex;flex-wrap:wrap;gap:20px 56px;align-items:flex-end">
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <div style="color:var(--mute);font-size:13px;display:flex;align-items:center">Валовий прибуток з початку місяця<span onMouseEnter="{{ tips.gProfit.on }}" onMouseLeave="{{ tips.gProfit.off }}" onClick="{{ tips.gProfit.click }}" style="display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;box-sizing:border-box;border-radius:50%;border:1px solid var(--dash);color:var(--faint);font:600 10px 'Onest',sans-serif;font-style:normal;cursor:help;vertical-align:middle;margin-left:6px;flex:none;user-select:none;text-align:center">i<sc-if value="{{ tips.gProfit.open }}" hint-placeholder-val="{{ false }}"><span style="position:fixed;left:{{ tipX }};top:{{ tipY }};transform:{{ tipT }};z-index:1000;box-sizing:border-box;width:max-content;max-width:300px;background:var(--ink);color:var(--card);font:400 12.5px/1.45 'Onest',sans-serif;padding:9px 12px;border-radius:8px;box-shadow:0 6px 20px var(--shadow);text-align:left;white-space:normal;cursor:default">Валовий прибуток: продажі без ПДВ мінус собівартість товару. До комісій, доставки й реклами. Якщо для товару немає собівартості, він у прибуток не входить.</span></sc-if></span></div>
+      <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap"><div style="font-size:44px;font-weight:700;letter-spacing:-0.02em;line-height:1.05">{{ g.profit }}</div><div style="color:var(--faint);font-size:12px">без ПДВ</div></div>
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><span style="background:{{ g.deltaBg }};color:{{ g.deltaFg }};font-weight:600;border-radius:8px;padding:3px 9px;white-space:nowrap">{{ g.delta }}</span><span style="color:var(--mute)">минулого місяця було {{ g.prevProfit }}</span></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <div style="font-size:30px;font-weight:700;line-height:1.1">{{ g.margin }}</div>
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;color:var(--mute);font-size:13px"><span>валова маржа · було {{ g.prevMargin }}</span><span onMouseEnter="{{ tips.gMargin.on }}" onMouseLeave="{{ tips.gMargin.off }}" onClick="{{ tips.gMargin.click }}" style="display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;box-sizing:border-box;border-radius:50%;border:1px solid var(--dash);color:var(--faint);font:600 10px 'Onest',sans-serif;font-style:normal;cursor:help;vertical-align:middle;margin-left:6px;flex:none;user-select:none;text-align:center">i<sc-if value="{{ tips.gMargin.open }}" hint-placeholder-val="{{ false }}"><span style="position:fixed;left:{{ tipX }};top:{{ tipY }};transform:{{ tipT }};z-index:1000;box-sizing:border-box;width:max-content;max-width:300px;background:var(--ink);color:var(--card);font:400 12.5px/1.45 'Onest',sans-serif;padding:9px 12px;border-radius:8px;box-shadow:0 6px 20px var(--shadow);text-align:left;white-space:normal;cursor:default">Валова маржа: валовий прибуток, поділений на продажі без ПДВ. Це частка в ціні, а не націнка: продали за 100 zł, собівартість 40 zł, маржа 60%, націнка 150%. Зміна маржі в процентних пунктах.</span></sc-if></span><span style="background:{{ g.mDeltaBg }};color:{{ g.mDeltaFg }};font-weight:600;border-radius:8px;padding:2px 8px;white-space:nowrap">{{ g.mDelta }}</span></div>
+    </div>
+    <sc-if value="{{ g.adOk }}" hint-placeholder-val="{{ true }}"><div style="display:flex;flex-direction:column;gap:4px">
+      <div style="font-size:30px;font-weight:700;line-height:1.1">{{ g.after }}</div>
+      <div style="color:var(--mute);font-size:13px">прибуток після реклами · маржа {{ g.afterMargin }}</div>
+    </div></sc-if>
+  </div>
+  <sc-if value="{{ g.noCost }}" hint-placeholder-val="{{ false }}"><div style="margin:10px clamp(12px,3vw,32px) 0;font-size:12.5px;color:var(--amber)">{{ g.noCost }}</div></sc-if>
+  <div style="margin:16px clamp(12px,3vw,32px) 0;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow-x:auto">
+    <div style="min-width:720px">
+      <div style="display:grid;grid-template-columns:minmax(240px,1fr) 150px 150px 100px;gap:16px;padding:12px 24px;border-bottom:1px solid var(--line);color:var(--mute);font-size:12.5px">
         <div>Рядок</div><div style="text-align:right">{{ curMonth }} <span style="font-size:11px;color:var(--faint)">без ПДВ</span></div><div style="text-align:right">{{ prevMonth }} <span style="font-size:11px;color:var(--faint)">без ПДВ</span></div><div style="text-align:right">Зміна</div>
       </div>
-      <div style="display:grid;grid-template-columns:minmax(260px,1fr) 160px 160px 110px;gap:16px;padding:14px 24px;border-bottom:1px solid var(--soft);align-items:center;">
-        <div>Продажі</div><div style="text-align:right"><span style="font-size:12px;color:var(--faint);border:1px dashed var(--dash);border-radius:6px;padding:2px 7px;font-weight:400">немає даних</span></div><div style="text-align:right"><span style="font-size:12px;color:var(--faint);border:1px dashed var(--dash);border-radius:6px;padding:2px 7px;font-weight:400">немає даних</span></div><div style="text-align:right"><span style="font-size:12px;color:var(--faint);border:1px dashed var(--dash);border-radius:6px;padding:2px 7px;font-weight:400">немає даних</span></div>
-      </div>
-      <div style="display:grid;grid-template-columns:minmax(260px,1fr) 160px 160px 110px;gap:16px;padding:14px 24px;border-bottom:1px solid var(--soft);align-items:center;">
-        <div>− Собівартість проданих товарів</div><div style="text-align:right"><span style="font-size:12px;color:var(--faint);border:1px dashed var(--dash);border-radius:6px;padding:2px 7px;font-weight:400">немає даних</span></div><div style="text-align:right"><span style="font-size:12px;color:var(--faint);border:1px dashed var(--dash);border-radius:6px;padding:2px 7px;font-weight:400">немає даних</span></div><div style="text-align:right"><span style="font-size:12px;color:var(--faint);border:1px dashed var(--dash);border-radius:6px;padding:2px 7px;font-weight:400">немає даних</span></div>
-      </div>
-      <div style="display:grid;grid-template-columns:minmax(260px,1fr) 160px 160px 110px;gap:16px;padding:14px 24px;border-bottom:1px solid var(--soft);align-items:center;">
-        <div>− Подарунки <span style="font-size:12px;color:var(--faint);font-weight:400">собівартість подарованого</span></div><div style="text-align:right"><span style="font-size:12px;color:var(--faint);border:1px dashed var(--dash);border-radius:6px;padding:2px 7px;font-weight:400">немає даних</span></div><div style="text-align:right"><span style="font-size:12px;color:var(--faint);border:1px dashed var(--dash);border-radius:6px;padding:2px 7px;font-weight:400">немає даних</span></div><div style="text-align:right"><span style="font-size:12px;color:var(--faint);border:1px dashed var(--dash);border-radius:6px;padding:2px 7px;font-weight:400">немає даних</span></div>
-      </div>
-      <div style="display:grid;grid-template-columns:minmax(260px,1fr) 160px 160px 110px;gap:16px;padding:14px 24px;border-bottom:1px solid var(--soft);align-items:center;font-weight:700;background:var(--card2)">
-        <div>= Прибуток</div><div style="text-align:right"><span style="font-size:12px;color:var(--faint);border:1px dashed var(--dash);border-radius:6px;padding:2px 7px;font-weight:400">немає даних</span></div><div style="text-align:right"><span style="font-size:12px;color:var(--faint);border:1px dashed var(--dash);border-radius:6px;padding:2px 7px;font-weight:400">немає даних</span></div><div style="text-align:right"><span style="font-size:12px;color:var(--faint);border:1px dashed var(--dash);border-radius:6px;padding:2px 7px;font-weight:400">немає даних</span></div>
-      </div>
+      <sc-for list="{{ g.lines }}" as="l" hint-placeholder-count="4">
+        <div style="display:grid;grid-template-columns:minmax(240px,1fr) 150px 150px 100px;gap:16px;padding:14px 24px;border-bottom:1px solid var(--soft);align-items:center;font-weight:{{ l.weight }};background:{{ l.bg }}">
+          <div>{{ l.name }}</div><div style="text-align:right">{{ l.cur }}</div><div style="text-align:right;color:var(--mid);font-weight:400">{{ l.prev }}</div><div style="text-align:right"><span style="background:{{ l.deltaBg }};color:{{ l.deltaFg }};font-weight:600;border-radius:8px;padding:3px 9px;white-space:nowrap">{{ l.delta }}</span></div>
+        </div>
+      </sc-for>
+      <sc-if value="{{ g.adOk }}" hint-placeholder-val="{{ true }}">
+      <div style="display:grid;grid-template-columns:minmax(240px,1fr) 150px 150px 100px;gap:16px;padding:12px 24px;border-bottom:1px solid var(--soft);align-items:center"><div style="display:flex;align-items:center">− Реклама<span onMouseEnter="{{ tips.gAd.on }}" onMouseLeave="{{ tips.gAd.off }}" onClick="{{ tips.gAd.click }}" style="display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;box-sizing:border-box;border-radius:50%;border:1px solid var(--dash);color:var(--faint);font:600 10px 'Onest',sans-serif;font-style:normal;cursor:help;vertical-align:middle;margin-left:6px;flex:none;user-select:none;text-align:center">i<sc-if value="{{ tips.gAd.open }}" hint-placeholder-val="{{ false }}"><span style="position:fixed;left:{{ tipX }};top:{{ tipY }};transform:{{ tipT }};z-index:1000;box-sizing:border-box;width:max-content;max-width:300px;background:var(--ink);color:var(--card);font:400 12.5px/1.45 'Onest',sans-serif;padding:9px 12px;border-radius:8px;box-shadow:0 6px 20px var(--shadow);text-align:left;white-space:normal;cursor:default">Витрати на рекламу за дні цього місяця з даних Allegro Ads. Під сумою видно, за які дні реклама врахована.</span></sc-if></span></div><div style="text-align:right">{{ g.ad }}<div style="font-size:11.5px;color:var(--faint)">враховано {{ g.adWin }}</div></div><div style="text-align:right"><span style="font-size:12px;color:var(--faint);border:1px dashed var(--dash);border-radius:6px;padding:2px 7px;font-weight:400;white-space:nowrap">немає даних</span></div><div style="text-align:right;color:var(--faint)">—</div></div>
+      <div style="display:grid;grid-template-columns:minmax(240px,1fr) 150px 150px 100px;gap:16px;padding:12px 24px;border-bottom:1px solid var(--soft);align-items:center;font-weight:700;background:var(--card2)"><div>= Прибуток після реклами</div><div style="text-align:right">{{ g.after }}</div><div style="text-align:right"><span style="font-size:12px;color:var(--faint);border:1px dashed var(--dash);border-radius:6px;padding:2px 7px;font-weight:400;white-space:nowrap">немає даних</span></div><div style="text-align:right;color:var(--faint);font-weight:400">—</div></div>
+      <div style="display:grid;grid-template-columns:minmax(240px,1fr) 150px 150px 100px;gap:16px;padding:12px 24px;border-bottom:1px solid var(--soft);align-items:center"><div>Маржа після реклами</div><div style="text-align:right">{{ g.afterMargin }}</div><div style="text-align:right"><span style="font-size:12px;color:var(--faint);border:1px dashed var(--dash);border-radius:6px;padding:2px 7px;font-weight:400;white-space:nowrap">немає даних</span></div><div style="text-align:right;color:var(--faint)">—</div></div>
+      </sc-if>
+      <sc-if value="{{ g.adNo }}" hint-placeholder-val="{{ false }}"><div style="display:grid;grid-template-columns:minmax(240px,1fr) 150px 150px 100px;gap:16px;padding:12px 24px;border-bottom:1px solid var(--soft);align-items:center;color:var(--mid)"><div>− Реклама</div><div style="text-align:right"><span style="font-size:12px;color:var(--faint);border:1px dashed var(--dash);border-radius:6px;padding:2px 7px;font-weight:400;white-space:nowrap">ще не підключено</span></div><div></div><div></div></div></sc-if>
+      <div style="display:grid;grid-template-columns:minmax(240px,1fr) 150px 150px 100px;gap:16px;padding:12px 24px;border-bottom:1px solid var(--soft);align-items:center;color:var(--mid)"><div>− Комісії майданчиків</div><div style="text-align:right"><span style="font-size:12px;color:var(--faint);border:1px dashed var(--dash);border-radius:6px;padding:2px 7px;font-weight:400;white-space:nowrap">ще не підключено</span></div><div></div><div></div></div>
+      <div style="display:grid;grid-template-columns:minmax(240px,1fr) 150px 150px 100px;gap:16px;padding:12px 24px;border-bottom:1px solid var(--soft);align-items:center;color:var(--mid)"><div>− Доставка</div><div style="text-align:right"><span style="font-size:12px;color:var(--faint);border:1px dashed var(--dash);border-radius:6px;padding:2px 7px;font-weight:400;white-space:nowrap">ще не підключено</span></div><div></div><div></div></div>
+      
+      <div style="display:grid;grid-template-columns:minmax(240px,1fr) 150px 150px 100px;gap:16px;padding:12px 24px;align-items:center;color:var(--mid)"><div>− Подарунки</div><div style="text-align:right"><span style="font-size:12px;color:var(--faint);border:1px dashed var(--dash);border-radius:6px;padding:2px 7px;font-weight:400;white-space:nowrap">ще не підключено</span></div><div></div><div></div></div>
     </div>
   </div>
-  </sc-if>
-  <sc-if value="{{ tabHelp }}" hint-placeholder-val="{{ false }}">
-  <div style="margin:24px 32px 0;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 26px;font-size:16px;line-height:1.55;display:flex;flex-direction:column;gap:10px;max-width:920px">
-    <div style="font-weight:700;font-size:20px">Як ми ділимо продажі</div>
-    <div><span style="font-weight:700">На попиті:</span> людина сама шукала товар, а ми її перехопили.</div>
-    <div><span style="font-weight:700">Брендові:</span> ми самі показали товар людині й створили попит. Тому TikTok Shop брендовий: там продає ролик, а не пошук.</div>
-    <div><span style="font-weight:700">Lumpurini Family:</span> продажі, які принесли активності Family.</div>
-  </div>
-  <div style="margin:16px 32px 0;display:flex;flex-wrap:wrap;gap:16px">
-    <div style="flex:1 1 280px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 26px"><div style="font-weight:700;font-size:16px;margin-bottom:12px">Брендові продажі</div><div style="display:flex;flex-direction:column;gap:8px;color:var(--ink2)"><div style="display:flex;gap:10px"><span style="flex:none;width:5px;height:5px;border-radius:50%;background:var(--faint);margin-top:8px"></span><span>Реклама Meta і TikTok на сайт</span></div><div style="display:flex;gap:10px"><span style="flex:none;width:5px;height:5px;border-radius:50%;background:var(--faint);margin-top:8px"></span><span>Переходи з наших профілів Instagram, Facebook, TikTok без реклами</span></div><div style="display:flex;gap:10px"><span style="flex:none;width:5px;height:5px;border-radius:50%;background:var(--faint);margin-top:8px"></span><span>TikTok Shop: реклама, блогери, наш ролик без реклами</span></div><div style="display:flex;gap:10px"><span style="flex:none;width:5px;height:5px;border-radius:50%;background:var(--faint);margin-top:8px"></span><span>Instagram Direct</span></div><div style="display:flex;gap:10px"><span style="flex:none;width:5px;height:5px;border-radius:50%;background:var(--faint);margin-top:8px"></span><span>TikTok Direct</span></div><div style="display:flex;gap:10px"><span style="flex:none;width:5px;height:5px;border-radius:50%;background:var(--faint);margin-top:8px"></span><span>Прямий захід на сайт</span></div><div style="display:flex;gap:10px"><span style="flex:none;width:5px;height:5px;border-radius:50%;background:var(--faint);margin-top:8px"></span><span>Чуже посилання на сайт</span></div></div></div>
-    <div style="flex:1 1 280px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 26px"><div style="font-weight:700;font-size:16px;margin-bottom:12px">Продажі на попиті</div><div style="display:flex;flex-direction:column;gap:8px;color:var(--ink2)"><div style="display:flex;gap:10px"><span style="flex:none;width:5px;height:5px;border-radius:50%;background:var(--faint);margin-top:8px"></span><span>Allegro</span></div><div style="display:flex;gap:10px"><span style="flex:none;width:5px;height:5px;border-radius:50%;background:var(--faint);margin-top:8px"></span><span>Amazon</span></div><div style="display:flex;gap:10px"><span style="flex:none;width:5px;height:5px;border-radius:50%;background:var(--faint);margin-top:8px"></span><span>Пошук на сайт: Google-реклама і звичайний пошук</span></div><div style="display:flex;gap:10px"><span style="flex:none;width:5px;height:5px;border-radius:50%;background:var(--faint);margin-top:8px"></span><span>AI-помічники на сайт: реклама в ChatGPT і переходи без реклами</span></div></div></div>
-    <div style="flex:1 1 280px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 26px"><div style="font-weight:700;font-size:16px;margin-bottom:12px">Lumpurini Family</div><div style="display:flex;flex-direction:column;gap:8px;color:var(--ink2)"><div style="display:flex;gap:10px"><span style="flex:none;width:5px;height:5px;border-radius:50%;background:var(--faint);margin-top:8px"></span><span>Усе, що принесли активності Family: листи, месенджери</span></div></div></div>
-  </div>
-  <div style="margin:16px 32px 0;display:flex;flex-wrap:wrap;gap:16px">
-    <div style="flex:1 1 380px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 26px"><div style="font-weight:700;margin-bottom:8px">«Платно» і «безплатно»</div><div style="display:flex;flex-direction:column;gap:8px;color:var(--ink2);line-height:1.5"><div><span style="font-size:11px;border-radius:6px;padding:1px 7px;background:var(--ink);color:var(--card)">платно</span> продаж прийшов з реклами або від блогерів, за яких ми платимо.</div><div><span style="font-size:11px;border-radius:6px;padding:1px 7px;border:1px solid var(--dash);color:var(--mid)">безплатно</span> продаж прийшов без оплати за показ чи перехід.</div></div></div>
-    <div style="flex:1 1 380px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 26px"><div style="font-weight:700;margin-bottom:8px">«Не визначено»</div><div style="display:flex;flex-direction:column;gap:8px;color:var(--ink2);line-height:1.5"><div>Продажі сайту, для яких джерело покупця ще не відоме. Джерело покупця оновлюється раз на тиждень, тому продажі останніх днів тимчасово потрапляють сюди. Рядок показує свою частку.</div></div></div>
-    <div style="flex:1 1 380px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 26px"><div style="font-weight:700;margin-bottom:8px">«0» і «немає даних»</div><div style="display:flex;flex-direction:column;gap:8px;color:var(--ink2);line-height:1.5"><div><span style="background:var(--red);color:#fff;font-weight:700;border-radius:6px;padding:1px 8px">0</span> раніше продажі були, тепер їх немає. Це сигнал перевірити джерело.</div><div><span style="font-size:12px;color:var(--faint);border:1px dashed var(--dash);border-radius:6px;padding:1px 7px">немає даних</span> джерело тоді ще не було підключене. Порівнювати нема з чим, тому в стовпці «Зміна» порожньо.</div></div></div>
-    <div style="flex:1 1 380px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 26px"><div style="font-weight:700;margin-bottom:8px">Як читати порівняння з минулим місяцем</div><div style="display:flex;flex-direction:column;gap:8px;color:var(--ink2);line-height:1.5"><div>Табло показує місяць наростаючим підсумком: з 1-го числа по вчорашній день. Поруч ті самі дні минулого місяця.</div><div style="display:flex;align-items:center;gap:8px"><span style="flex:none;width:14px;height:14px;border-radius:3px;background:var(--accent)"></span>суцільна смужка: цей місяць</div><div style="display:flex;align-items:center;gap:8px"><span style="flex:none;width:14px;height:14px;border-radius:3px;box-sizing:border-box;border:2px dashed var(--accent2)"></span>контурна смужка: минулий місяць</div><div>Відрізки по сім днів від 1-го числа: 1–7, 8–14, 15–21, 22–28, 29 – кінець місяця. Останній відрізок може бути неповним, тоді поруч написано, скільки в ньому днів.</div><div>Екран «Реклама» рахує інакше: календарні тижні з понеділка по неділю.</div></div></div>
-    <div style="flex:1 1 380px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 26px"><div style="font-weight:700;margin-bottom:8px">Гроші</div><div style="display:flex;flex-direction:column;gap:8px;color:var(--ink2);line-height:1.5"><div>Продажі показані без ПДВ, ціна товару з ПДВ. Валюту перемикає кнопка вгорі: zł або €.</div></div></div>
+  <div style="margin:28px clamp(12px,3vw,32px) 0;font-weight:600;font-size:16px;display:flex;align-items:center">За каналами<span onMouseEnter="{{ tips.gChan.on }}" onMouseLeave="{{ tips.gChan.off }}" onClick="{{ tips.gChan.click }}" style="display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;box-sizing:border-box;border-radius:50%;border:1px solid var(--dash);color:var(--faint);font:600 10px 'Onest',sans-serif;font-style:normal;cursor:help;vertical-align:middle;margin-left:6px;flex:none;user-select:none;text-align:center">i<sc-if value="{{ tips.gChan.open }}" hint-placeholder-val="{{ false }}"><span style="position:fixed;left:{{ tipX }};top:{{ tipY }};transform:{{ tipT }};z-index:1000;box-sizing:border-box;width:max-content;max-width:300px;background:var(--ink);color:var(--card);font:400 12.5px/1.45 'Onest',sans-serif;padding:9px 12px;border-radius:8px;box-shadow:0 6px 20px var(--shadow);text-align:left;white-space:normal;cursor:default">Реклама: витрати за дні цього місяця з даних Allegro Ads, по каналу і країні. Після реклами: валовий прибуток мінус ця реклама. Зміна порівнює валовий прибуток.</span></sc-if></span></div>
+  <div style="margin:12px clamp(12px,3vw,32px) 0;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow-x:auto">
+    <div style="min-width:1010px">
+      <div style="display:grid;grid-template-columns:minmax(180px,1fr) 110px 110px 56px 110px 110px 120px 80px;gap:12px;padding:12px 24px;border-bottom:1px solid var(--line);color:var(--mute);font-size:12.5px;align-items:end">
+        <div>Канал</div><div style="text-align:right">Продажі <span style="font-size:11px;color:var(--faint)">без ПДВ</span></div><div style="text-align:right">Валовий прибуток</div><div style="text-align:right">Маржа</div><div style="text-align:right">Реклама</div><div style="text-align:right">Після реклами</div><div style="text-align:right">{{ prevMonth }} <span style="font-size:11px;color:var(--faint)">валовий</span></div><div style="text-align:right">Зміна</div>
+      </div>
+      <sc-for list="{{ g.chanRows }}" as="r" hint-placeholder-count="5">
+        <div style="display:grid;grid-template-columns:minmax(180px,1fr) 110px 110px 56px 110px 110px 120px 80px;gap:12px;padding:{{ padY }} 24px;border-bottom:1px solid var(--soft);align-items:center;background:{{ r.bg }}">
+          <div style="padding-left:{{ r.indent }};font-weight:{{ r.weight }};white-space:nowrap">{{ r.name }}</div>
+          <div style="text-align:right">{{ r.net }}</div>
+          <div style="text-align:right;font-weight:600;color:{{ r.pfFg }};font-size:{{ r.pfSize }}">{{ r.profit }}</div>
+          <div style="text-align:right;color:var(--mute)">{{ r.margin }}</div>
+          <div style="text-align:right">{{ r.ad }}</div>
+          <div style="text-align:right;font-weight:600">{{ r.after }}</div>
+          <div style="text-align:right;color:var(--mid)">{{ r.prev }}</div>
+          <div style="text-align:right"><span style="background:{{ r.deltaBg }};color:{{ r.deltaFg }};font-weight:600;border-radius:8px;padding:3px 9px;white-space:nowrap">{{ r.delta }}</span></div>
+        </div>
+      </sc-for>
+    </div>
   </div>
   </sc-if>
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;density&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;просторо&quot;,&quot;компактно&quot;],&quot;default&quot;:&quot;просторо&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;defaultCurrency&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;PLN&quot;,&quot;EUR&quot;],&quot;default&quot;:&quot;PLN&quot;,&quot;tsType&quot;:&quot;'PLN'|'EUR'&quot;}}">
 class Component extends DCLogic {
-  state = { theme: null, cur: null, view: 'chan', tab: 'sources', sortKey: 'sum', sortDir: -1, open: { 'Allegro': true, 'Сайт': true, brand: true, demand: true, family: true, undef: true } };
+  state = { tip: null, tipX: '0px', tipY: '0px', tipT: 'none', theme: null, cur: null, zPreset: 'month', zFrom: null, zTo: null, zView: 'src', zOpen: { 's:Allegro': true, 's:Сайт': true }, zSort: 'net', zDir: -1, pOpen: {},  view: 'chan', tab: 'sources', sortKey: 'sum', sortDir: -1, open: { 'Allegro': true, 'Сайт': true, brand: true, demand: true, family: true, undef: true } };
   theme() { const hr = new Date().getHours(); return hr >= 19 || hr < 7 ? 'dark' : 'light'; }
-  applyTheme() { this.applyTheme(); this._th = setInterval(() => this.applyTheme(), 60000); document.documentElement.setAttribute('data-theme', this.theme()); }
-  componentDidMount() { document.documentElement.setAttribute('data-theme', this.theme()); if (!window.LUMPURINI_DATA) this._t = setInterval(() => { if (window.LUMPURINI_DATA) { clearInterval(this._t); this.forceUpdate(); } }, 100); }
-  componentWillUnmount() { clearInterval(this._th); clearInterval(this._t); }
+  applyTheme() { document.documentElement.setAttribute('data-theme', this.theme()); }
+  showTip(id, e) { const r = e.currentTarget.getBoundingClientRect(), below = r.bottom + 160 < window.innerHeight;
+    this.setState({ tip: id, tipX: Math.max(8, Math.min(r.left - 10, window.innerWidth - 310)) + 'px', tipY: (below ? r.bottom + 6 : r.top - 6) + 'px', tipT: below ? 'none' : 'translateY(-100%)' }); }
+  hideTip(id) { if (this.state.tip === id) this.setState({ tip: null }); }
+  componentDidMount() { this._close = () => { if (this.state.tip) this.setState({ tip: null }); }; document.addEventListener('click', this._close); window.addEventListener('scroll', this._close, true); this.applyTheme(); this._th = setInterval(() => this.applyTheme(), 60000); if (!window.LUMPURINI_DATA) this._t = setInterval(() => { if (window.LUMPURINI_DATA) { clearInterval(this._t); this.forceUpdate(); } }, 100); }
+  componentWillUnmount() { document.removeEventListener('click', this._close); window.removeEventListener('scroll', this._close, true); clearInterval(this._th); clearInterval(this._t); }
   renderVals() {
     // Усі цифри беруться з window.LUMPURINI_DATA (файл data.js)
-    const D = window.LUMPURINI_DATA; if (!D) return {};
+    const D = window.LUMPURINI_DATA; if (!D) return { srcLabel: 'завантаження…', srcDot: 'var(--dash)' };
     const A = 'var(--accent)', AL = 'var(--accent2)', RED = 'var(--red)';
     const cur = this.state.cur || (this.props.defaultCurrency ?? 'PLN'), k = cur === 'EUR' ? 'eur' : 'pln', unit = cur === 'EUR' ? '€' : 'zł';
     const money = v => Math.round(v).toLocaleString('uk-UA') + '\u00a0' + unit;
     const sum = a => a.reduce((s, v) => s + v, 0), dec = (v, n) => v.toFixed(n).replace('.', ','), pct = (a, b) => b ? Math.round(a / b * 100) + '%' : '';
+    const DASH = { label: '—', bg: 'transparent', fg: 'var(--faint)' };
+    const dpp = (a, b) => { if (a == null || b == null) return DASH; const d = Math.round(a - b); return Object.assign({ label: (d > 0 ? '+' : d < 0 ? '−' : '') + Math.abs(d) + ' п.п.' }, d >= 1 ? { bg: 'var(--okbg)', fg: 'var(--okfg)' } : d <= -1 ? { bg: 'var(--badbg)', fg: 'var(--badfg)' } : { bg: 'var(--soft)', fg: 'var(--mid)' }); };
     const delta = (c, p) => {
       const g = { bg: 'var(--okbg)', fg: 'var(--okfg)' }, r = { bg: 'var(--badbg)', fg: 'var(--badfg)' }, n = { bg: 'var(--soft)', fg: 'var(--mid)' };
-      if (!p) return Object.assign({ label: '\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0' }, n);
+      if (!p) return c > 0 ? Object.assign({ label: 'новий' }, g) : DASH;
       const d = Math.round((c - p) / p * 100);
       return Object.assign({ label: (d > 0 ? '+' : d < 0 ? '−' : '') + Math.abs(d) + '%' }, d >= 3 ? g : d <= -3 ? r : n);
     };
@@ -386,17 +512,28 @@ class Component extends DCLogic {
     const range = (a, b) => (a.d === b.d ? a.d : a.d + '–' + b.d) + ' ' + MG[b.m - 1];
     const fullDate = x => WD[new Date(x.y, x.m - 1, x.d).getDay()] + ', ' + x.d + ' ' + MG[x.m - 1] + ' ' + x.y;
     const cf = pd(D.meta.current.from), ct = pd(D.meta.current.to), pf = pd(D.meta.previous.from), pt = pd(D.meta.previous.to), up = pd(D.meta.updatedAt);
-    const dn = n => n === 1 ? 'день' : n < 5 ? 'дні' : 'днів';
-    const segs = D.meta.segments.map(s => { const label = s.fromDay === s.toDay ? '' + s.fromDay : s.fromDay + '–' + s.toDay, note = s.complete ? '' : 'неповний, ' + s.days + ' ' + dn(s.days);
-      return { label, note, long: label + ' ' + MG[ct.m - 1] + (note ? ' (' + note + ')' : '') }; });
-    const lastSeg = D.meta.segments[D.meta.segments.length - 1], SI = segs.map((_, i) => i);
+    const dn = n => n % 10 === 1 && n % 100 !== 11 ? 'день' : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 'дні' : 'днів';
+    const DC = D.meta.decades, NS = DC.filter(d => d.started).length, SI = Array.from({ length: NS }, (_, i) => i);
+    const pmM = D.meta.previousMonth ? pd(D.meta.previousMonth.from).m : pt.m;
+    const dl = DC.map(d => { const label = d.fromDay + '–' + d.endDay; return { label, long: label + ' ' + MG[ct.m - 1] + (d.started && !d.complete ? ' (неповна, ' + d.days + ' ' + dn(d.days) + ')' : '') }; });
+    const AD = D.ads || {}, AW = AD.weeks || [], AR = AD.rows || [], DY = D.daily || [], AWD = AW.map((_, i) => i).filter(i => AW[i].hasData);
+    const chanAll = (ch, country, i) => sum(DY.filter(r => r.channel === ch && (!country || r.country === country) && r.d >= AW[i].from && r.d <= AW[i].to).map(r => r.net[k]));
+    const p2 = n => String(n).padStart(2, '0');
+    const tipOf = id => ({ open: this.state.tip === id, on: e => this.showTip(id, e), off: () => this.hideTip(id), click: e => { e.stopPropagation(); this.showTip(id, e); } });
+    const tips = Object.fromEntries(['cur','total','decades','month','paid','free','srcAll','segs','change','zProfit','zMargin','zSrc','adTitle','adShare','adLimit','gProfit','gMargin','gAd','gChan'].map(id => [id, tipOf(id)]));
+    const GROSS = 'Валовий прибуток: продажі без ПДВ мінус собівартість товару. До комісій, доставки й реклами.', MARG = 'Валова маржа: валовий прибуток, поділений на продажі без ПДВ. Це частка в ціні, а не націнка.';
+    const CHG = 'Зміна проти тих самих днів минулого місяця. «новий»: тоді продажів не було, тепер є. «—»: порівнювати нема з чим.';
+    const ADD = D.adsDaily || [], adIn = (a, b, fl) => ADD.filter(r => r.d >= a && r.d <= b && fl(r));
+    const adAgg = rs => ({ spend: sum(rs.map(r => r.spend[k])), sales: sum(rs.map(r => r.sales[k])), units: sum(rs.map(r => r.units || 0)) });
+    const shortD = s => { const x = pd(s); return x.d + '.' + p2(x.m); }, dMin = rs => rs.reduce((m, r) => r.d < m ? r.d : m, '9'), dMax = rs => rs.reduce((m, r) => r.d > m ? r.d : m, '');
+    const adCov = (a, b) => { const rs = adIn(a, b, () => true); if (!ADD.length) return ''; if (!rs.length) return 'реклами за цей період у даних немає'; const lo = dMin(rs), hi = dMax(rs); return lo <= a && hi >= b ? '' : 'реклама врахована ' + (lo > a ? 'з ' + shortD(lo) : '') + (hi < b ? (lo > a ? ' ' : '') + 'по ' + shortD(hi) : ''); };
     const compact = (this.props.density ?? 'просторо') === 'компактно', view = this.state.view, tab = this.state.tab;
 
     // ---- Джерела: дерево канал → країна → джерело
-    const leaf = (r, name) => ({ name, t: r.type, p: r.paid, undef: r.type == null, cw: r.current.map(s => s.net[k]), pw: r.previous ? r.previous.map(s => s.net[k]) : null, co: sum(r.current.map(s => s.orders)), po: r.previous ? sum(r.previous.map(s => s.orders)) : null });
+    const leaf = (r, name) => ({ name, chn: r.channel, cty: r.country, pf: r.previousFull ? r.previousFull.map(s => s.net[k]) : null, t: r.type, p: r.paid, undef: r.type == null, cw: r.current.map(s => s.net[k]), pw: r.previous ? r.previous.map(s => s.net[k]) : null, co: sum(r.current.map(s => s.orders)), po: r.previous ? sum(r.previous.map(s => s.orders)) : null });
     const group = (rs, key) => { const m = new Map(); rs.forEach(r => { const v = r[key] || ''; if (!m.has(v)) m.set(v, []); m.get(v).push(r); }); return [...m]; };
     const agg = n => { if (!n.kids) return n; const ks = n.kids.map(agg), hp = ks.some(x => x.pw);
-      n.cw = SI.map(i => sum(ks.map(x => x.cw[i]))); n.pw = hp ? SI.map(i => sum(ks.map(x => x.pw ? x.pw[i] : 0))) : null; n.co = sum(ks.map(x => x.co)); n.po = hp ? sum(ks.map(x => x.po || 0)) : null; return n; };
+      n.cw = SI.map(i => sum(ks.map(x => x.cw[i]))); n.pw = hp ? SI.map(i => sum(ks.map(x => x.pw ? x.pw[i] : 0))) : null; n.co = sum(ks.map(x => x.co)); n.po = hp ? sum(ks.map(x => x.po || 0)) : null; n.pf = ks.some(x => x.pf) ? DC.map((_, i) => sum(ks.map(x => x.pf ? (x.pf[i] || 0) : 0))) : null; return n; };
     const leaves = n => n.kids ? n.kids.flatMap(leaves) : [n];
     const chans = group(D.sources, 'channel').map(([ch, rs]) => {
       if (rs.length === 1 && !rs[0].country && !rs[0].source) return Object.assign(leaf(rs[0], ch), { id: ch });
@@ -406,12 +543,22 @@ class Component extends DCLogic {
 
     // ---- зведення за типом продажів
     const lv = chans.flatMap(leaves), tot = x => [sum(x.map(l => sum(l.cw))), sum(x.map(l => l.pw ? sum(l.pw) : 0))];
-    const blank = { val: false, nd: false }, ND = { val: false, nd: true };
-    const mRow = (name, f, strong, split) => { const x = lv.filter(f), t = tot(x), d = delta(t[0], t[1]), has = t[0] || t[1], known = x.filter(l => l.p != null);
-      const c = (v, share, big) => ({ val: true, nd: false, text: money(v), share, size: big ? '16px' : '14px', weight: big ? 700 : (strong ? 700 : 500), fg: 'var(--ink)' });
-      const part = pv => !split || !has ? blank : !known.length ? ND : c(tot(x.filter(l => l.p === pv))[0], pct(tot(x.filter(l => l.p === pv))[0], tc));
-      return { name, weight: strong ? 700 : 500, bg: strong ? 'var(--card2)' : 'var(--card)', cells: [part(true), part(false), has ? c(t[0], strong ? '' : pct(t[0], tc), true) : ND, has ? Object.assign(c(t[1], ''), { weight: 400, fg: 'var(--mid)' }) : blank], delta: d.label, deltaBg: d.bg, deltaFg: d.fg }; };
-    const mRows = [mRow('Брендові', l => l.t === 'brand', false, true), mRow('На попиті', l => l.t === 'demand', false, true), mRow('Lumpurini Family', l => l.t === 'family', false, false), mRow('Не визначено', l => !l.t, false, false), mRow('Разом', () => true, true, true)];
+    const dash = { val: true, text: '—', share: '', sub: '', size: '14px', weight: 400, fg: 'var(--faint)' };
+    const covCur = adCov(D.meta.current.from, D.meta.current.to);
+    const mRow = (name, f, strong, split, parts) => { const x = lv.filter(f), t = tot(x), d = delta(t[0], t[1]), has = t[0] || t[1], known = x.filter(l => l.p != null);
+      const c = (v, share, big, sub) => ({ val: true, text: money(v), share, sub: sub || '', size: big ? '16px' : '14px', weight: big ? 700 : (strong ? 700 : 500), fg: 'var(--ink)' });
+      let pp = null, ff = null, fromAds = false;
+      if (parts) { const ok = parts.filter(r => r._pp != null); if (ok.length) { pp = sum(ok.map(r => r._pp)); ff = sum(ok.map(r => r._ff)); } }
+      else if (split && has) { if (known.length) { pp = tot(x.filter(l => l.p === true))[0]; ff = tot(x.filter(l => l.p === false))[0]; }
+        else { const ar = adIn(D.meta.current.from, D.meta.current.to, r => x.some(l => l.chn === r.channel && (!l.cty || l.cty === r.country))); if (ar.length) { pp = adAgg(ar).sales; ff = t[0] - pp; fromAds = true; } } }
+      const part = (v, sub) => v == null ? dash : c(v, pct(v, tc), false, sub);
+      return { _pp: pp, _ff: ff, name, weight: strong ? 700 : 500, bg: strong ? 'var(--card2)' : 'var(--card)', cells: [part(pp, fromAds ? covCur : ''), part(ff), has ? c(t[0], strong ? '' : pct(t[0], tc), true) : dash, has ? Object.assign(c(t[1], ''), { weight: 400, fg: 'var(--mid)' }) : dash], delta: d.label, deltaBg: d.bg, deltaFg: d.fg }; };
+    const mB = mRow('Брендові', l => l.t === 'brand', false, true), mD = mRow('На попиті', l => l.t === 'demand', false, true);
+    const mRows = [mB, mD, mRow('Lumpurini Family', l => l.t === 'family', false, false), mRow('Не визначено', l => !l.t, false, false), mRow('Разом', () => true, true, true, [mB, mD])];
+    ['Брендові: ми самі показали товар людині й створили попит. Реклама Meta і TikTok, наші профілі, TikTok Shop з роликами й блогерами, Direct, прямий захід на сайт.',
+     'На попиті: людина сама шукала товар, а ми її перехопили. Allegro, Amazon, пошук Google і AI-помічники на сайт.',
+     'Продажі, які принесли активності Lumpurini Family: листи, месенджери.',
+     'Продажі сайту, для яких джерело покупця ще не відоме. Воно оновлюється раз на тиждень, тому останні дні тимчасово тут; нулі за ці дні червоним не позначаються.', ''].forEach((t, i) => Object.assign(mRows[i], { tipHas: !!t, tipText: t, tip: tipOf('m' + i) }));
 
     // ---- таблиця: за каналами або за типом
     const pick = (n, f) => { if (!n.kids) return f(n) ? n : null; const ks = n.kids.map(x => pick(x, f)).filter(Boolean); return ks.length ? Object.assign({}, n, { kids: ks }) : null; };
@@ -424,7 +571,7 @@ class Component extends DCLogic {
     const rows = [];
     const walk = (n, depth, id, parent, mixed) => {
       const c = sum(n.cw), p = n.pw ? sum(n.pw) : null; if (!c && !p) return;
-      const d = delta(c, p), open = !!this.state.open[id], zero = c === 0 && p > 0, mx = Math.max(1, ...n.cw, ...(n.pw || [0]));
+      const d = p == null ? DASH : delta(c, p), open = !!this.state.open[id], zero = c === 0 && p > 0, mx = Math.max(1, ...n.cw, ...(n.pw || [0]), ...(n.pf ? n.pf.slice(NS) : [0]));
       const shareOf = t => pct(sum(leaves(n).filter(l => l.t === t).map(l => sum(l.cw))), c);
       rows.push({
         name: n.name, indent: depth * 22 + 'px', padY: compact ? '7px' : (depth === 0 ? '14px' : '10px'),
@@ -440,18 +587,34 @@ class Component extends DCLogic {
         cur: money(c), isZero: zero, notZero: !zero, prev: p == null ? '' : money(p), hasPrev: p != null, noPrev: p == null,
         orders: n.co, prevOrders: n.po == null ? '' : '· було ' + n.po,
         delta: d.label, deltaBg: zero ? RED : d.bg, deltaFg: zero ? '#fff' : d.fg,
-        weeks: n.cw.map((v, i) => { const pv = n.pw ? n.pw[i] : null; return {
-          curH: (v === 0 ? (pv > 0 ? 3 : 1) : Math.max(3, v / mx * 26)) + 'px', curBg: v === 0 ? (pv > 0 ? RED : 'var(--axis)') : A,
-          prevH: (pv ? Math.max(3, pv / mx * 26) : 0) + 'px', prevBorder: pv ? '1.5px solid ' + AL : '0',
-          title: segs[i].long + ': ' + money(v) + ' · ' + MG[pt.m - 1].replace(/а$|я$/, m => m) + ': ' + (pv == null ? 'немає даних' : money(pv)) }; })
+        weeks: DC.map((dd, i) => { const fut = i >= NS, v = fut ? 0 : n.cw[i], pv = fut ? (n.pf ? n.pf[i] : null) : (n.pw ? n.pw[i] : null); return {
+          curH: (fut ? 0 : v === 0 ? (pv > 0 ? 3 : 1) : Math.max(3, v / mx * 26)) + 'px', curBg: v === 0 ? (pv > 0 && !fut ? RED : 'var(--axis)') : A,
+          prevH: (pv ? Math.max(3, pv / mx * 26) : 0) + 'px', prevBorder: pv ? '1.5px ' + (fut ? 'dashed ' : 'solid ') + AL : '0',
+          title: fut ? dl[i].label + ' ' + MG[ct.m - 1] + ': ще попереду · ' + dd.fromDay + '–' + dd.prevEndDay + ' ' + MG[pmM - 1] + ': ' + (pv == null ? 'немає даних' : money(pv))
+            : dl[i].long + ': ' + money(v) + ' · ті самі дні ' + MG[pt.m - 1] + ': ' + (pv == null ? 'немає даних' : money(pv)) }; })
       });
       if (n.kids && open) n.kids.forEach((x, i) => walk(x, depth + 1, id + '/' + i, { c, name: n.name, isGroup: n.isGroup }, n.mixed));
     };
     tree.forEach(c => walk(c, 0, c.id, null));
 
     // ---- верхня картка
-    const bmx = Math.max(1, ...tw, ...tp);
-    const bWeeks = tw.map((v, i) => { const d = delta(v, tp[i]); return { label: segs[i].label, note: segs[i].note, cur: money(v), prev: money(tp[i]), curH: Math.max(2, v / bmx * 120) + 'px', prevH: Math.max(2, tp[i] / bmx * 120) + 'px', delta: d.label, deltaBg: d.bg, deltaFg: d.fg }; });
+    // ---- місяць по декадах (meta.decades, previousFull, previousMonth)
+    const sv = (arr, i) => arr && arr[i] ? arr[i].net[k] : 0;
+    const dv = DC.map((d, i) => ({ d, c: sum(D.sources.map(s => sv(s.current, i))), ps: sum(D.sources.map(s => sv(s.previous, i))), pf: sum(D.sources.map(s => sv(s.previousFull, i))) }));
+    const dmx = Math.max(1, ...dv.map(x => Math.max(x.c, x.pf)));
+    const dTitles = ['Перша декада', 'Друга декада', 'Третя декада'], cmL = MN[ct.m - 1].toLowerCase(), pmL = MN[pmM - 1].toLowerCase();
+    const decades = dv.map(({ d, c, ps, pf }, i) => { const dd = d.started ? delta(c, d.complete ? pf : ps) : {}, ch = Math.max(2, c / dmx * 180), ph = Math.max(2, pf / dmx * 180), dates = dl[i].label + ' ' + MG[ct.m - 1];
+      return { started: !!d.started, ahead: !d.started, title: dTitles[i] || dl[i].label, cur: money(c), curH: ch + 'px', curLabel: ch >= 24 ? cmL : '', prevFull: money(pf), prevH: ph + 'px', prevLabel: ph >= 24 ? pmL : '',
+        delta: dd.label, deltaBg: dd.bg, deltaFg: dd.fg, note: d.started && !d.complete ? d.days + ' ' + dn(d.days) + ' із ' + d.daysTotal : '',
+        daysLine: d.daysTotal !== d.prevDaysTotal ? d.daysTotal + ' ' + dn(d.daysTotal) + ' · було ' + d.prevDaysTotal : '',
+        tip: !d.started ? dates + ', ще попереду. Пунктир: повна декада ' + MG[pmM - 1] + ', ' + money(pf) + '.'
+          : d.complete ? dates + '. Відсоток: порівняння з повною декадою ' + MG[pmM - 1] + ', ' + money(pf) + '.'
+          : dates + ', минуло ' + d.days + ' ' + dn(d.days) + ' із ' + d.daysTotal + '. Відсоток: порівняння ' + (d.days === 1 ? 'з тим самим днем ' : 'з тими самими ' + d.days + ' днями ') + MG[pmM - 1] + ', ' + money(ps) + '. Пунктир: повна декада ' + MG[pmM - 1] + '.' }; });
+    const mp = sum(D.sources.map(s => s.previousMonth ? s.previousMonth.net[k] : sum((s.previousFull || []).map(x => x.net[k])))), over = tc >= mp, msc = Math.max(tc, mp, 1), mDays = sum(DC.map(d => d.daysTotal));
+    const month = { cur: money(tc), prev: money(mp), prevW: mp / msc * 100 + '%', curW: 'calc(' + tc / msc * 100 + '% - ' + (over ? 6 : 12) + 'px)',
+      daysText: ct.d + ' ' + dn(ct.d) + ' із ' + mDays, pctText: mp ? 'це ' + Math.round(tc / mp * 100) + '% усього ' + MG[pmM - 1] : '',
+      status: !mp ? 'Минулого місяця продажів не було' : over ? 'Обігнали на ' + money(tc - mp) : 'Залишилось ' + money(mp - tc),
+      bg: mp && over ? 'var(--okbg)' : 'var(--soft)', fg: mp && over ? 'var(--okfg)' : 'var(--mid)' };
     const shown = chans.filter(c => sum(c.cw) || (c.pw && sum(c.pw))), cmx = Math.max(1, ...shown.map(c => Math.max(sum(c.cw), c.pw ? sum(c.pw) : 0)));
     const cRows = shown.map(c => { const v = sum(c.cw), p = c.pw ? sum(c.pw) : 0, d = delta(v, p), z = v === 0 && p > 0; return { name: c.name, cur: money(v), prev: money(p), curW: v / cmx * 72 + '%', prevW: p / cmx * 72 + '%', curBg: z ? RED : A, delta: d.label, deltaBg: z ? RED : d.bg, deltaFg: z ? '#fff' : d.fg }; });
 
@@ -459,47 +622,153 @@ class Component extends DCLogic {
     const sk = this.state.sortKey, sd = this.state.sortDir, order = chans.map(c => c.name), chN = [];
     D.products.forEach(p => p.channels.forEach(c => { if (!chN.includes(c.channel)) chN.push(c.channel); }));
     chN.sort((a, b) => (order.indexOf(a) + 1 || 99) - (order.indexOf(b) + 1 || 99));
-    let pr = D.products.map(p => { const cs = chN.map(n => p.channels.find(c => c.channel === n)), u = cs.map(c => c ? c.current.units : 0), pu = cs.map(c => c && c.previous ? c.previous.units : 0);
-      const a = sum(cs.map(c => c ? c.current.net[k] : 0)), pa = sum(cs.map(c => c && c.previous ? c.previous.net[k] : 0));
-      return { name: p.name, code: p.sku, cs, u, pu, units: sum(u), prevUnits: sum(pu), a, pa, d: pa ? (a - pa) / pa : -9 }; }).filter(p => p.units || p.prevUnits);
-    const key = p => sk === 'name' ? p.name : sk === 'units' ? p.units : sk === 'sum' ? p.a : sk === 'prev' ? p.pa : sk === 'delta' ? p.d : p.u[+sk.slice(1)];
+    const pcm = new Map(); DY.filter(r => r.d >= D.meta.current.from && r.d <= D.meta.current.to).forEach(r => { const id = r.sku + '|' + r.channel, x = pcm.get(id) || { pn: 0, pc: 0 }; if (r.cost) { x.pn += r.net[k]; x.pc += r.cost[k]; } pcm.set(id, x); });
+    const pfm = (pn, pc, units) => !units ? { profit: '—', margin: '', pfFg: 'var(--faint)', pfSize: 'inherit' } : pn ? { profit: money(pn - pc), margin: Math.round((pn - pc) / pn * 100) + '%', pfFg: 'var(--ink)', pfSize: 'inherit' } : { profit: 'немає даних', margin: '', pfFg: 'var(--faint)', pfSize: '12px' };
+    let pr = D.products.map(p => { const cs = chN.map(n => p.channels.find(c => c.channel === n)), u = cs.map(c => c ? c.current.units : 0), pu = cs.map(c => c && c.previous ? c.previous.units : 0), cm = chN.map(n => pcm.get(p.sku + '|' + n) || { pn: 0, pc: 0 });
+      const a = sum(cs.map(c => c ? c.current.net[k] : 0)), pa = sum(cs.map(c => c && c.previous ? c.previous.net[k] : 0)), gr = sum(cs.map(c => c && c.current.price ? c.current.price[k] * c.current.units : 0)), units = sum(u), pn = sum(cm.map(x => x.pn)), pc = sum(cm.map(x => x.pc));
+      return { name: p.name, code: p.sku, cs, cm, u, pu, units, prevUnits: sum(pu), a, pa, gr, pn, pc, price: units ? gr / units : 0, prof: pn ? pn - pc : -1e12, marg: pn ? (pn - pc) / pn : -1e12, d: pa ? (a - pa) / pa : -9 }; }).filter(p => p.units || p.prevUnits);
+    const key = p => sk === 'name' ? p.name : sk === 'units' ? p.units : sk === 'sum' ? p.a : sk === 'price' ? p.price : sk === 'profit' ? p.prof : sk === 'margin' ? p.marg : sk === 'prev' ? p.pa : p.d;
     pr.sort((x, y) => { const a = key(x), b = key(y); return (typeof a === 'string' ? a.localeCompare(b, 'uk') : a - b) * sd; });
-    const pCols = [['name','Товар','left',''],['units','Штук','right','· було'],['sum','Продажі','right','без ПДВ']].concat(chN.map((n, j) => ['c' + j, n, 'right', 'шт'])).concat([['prev', MN[pt.m - 1], 'right', 'без ПДВ'],['delta','Зміна','right','']])
-      .map(([kk, label, align, sub]) => ({ label, align, sub, fg: sk === kk ? 'var(--ink)' : 'var(--mute)', weight: sk === kk ? 600 : 400, arrow: sk === kk ? (sd < 0 ? '▼' : '▲') : '',
+    const pTips = { name: 'Натисніть на товар, щоб побачити кожен канал окремо. Натисніть на заголовок стовпця, щоб відсортувати.', sum: 'Продажі без ПДВ. Червоний 0: минулого місяця продажі були, зараз немає.', price: 'Середня фактична ціна: продажі з ПДВ, поділені на продані штуки. У рядку каналу видно ціну на цьому каналі.', profit: GROSS, margin: MARG, delta: CHG };
+    const pCols = [['name','Товар','left',''],['units','Штук','right','· було'],['sum','Продажі','right','без ПДВ'],['price','Середня ціна','right','з ПДВ'],['profit','Валовий прибуток','right','без ПДВ'],['margin','Маржа','right',''],['prev', MN[pt.m - 1], 'right', 'без ПДВ'],['delta','Зміна','right','']]
+      .map(([kk, label, align, sub]) => ({ tipHas: !!pTips[kk], tipText: pTips[kk] || '', tip: tipOf('pc' + kk), label, align, sub, fg: sk === kk ? 'var(--ink)' : 'var(--mute)', weight: sk === kk ? 600 : 400, arrow: sk === kk ? (sd < 0 ? '▼' : '▲') : '',
         sort: () => this.setState(s => ({ sortKey: kk, sortDir: s.sortKey === kk ? -s.sortDir : (kk === 'name' ? 1 : -1) })) }));
-    const pRows = pr.map(p => { const z = p.units === 0 && p.prevUnits > 0, d = delta(p.a, p.pa); return { name: p.name, code: p.code, units: p.units, prevUnits: p.prevUnits, sum: money(p.a), prev: money(p.pa), isZero: z, notZero: !z,
-      bg: z ? 'var(--zerobg)' : 'var(--card)', delta: d.label, deltaBg: z ? RED : d.bg, deltaFg: z ? '#fff' : d.fg,
-      ch: p.u.map((v, j) => ({ text: v ? v : (p.pu[j] ? '0' : '·'), fg: v ? 'var(--ink)' : (p.pu[j] ? RED : 'var(--dash)'), weight: !v && p.pu[j] ? 700 : 400, title: MN[pt.m - 1] + ': ' + p.pu[j] + ' шт' })) }; });
-    const pta = sum(pr.map(p => p.a)), ptp = sum(pr.map(p => p.pa)), ptd = delta(pta, ptp);
-    const pTotal = { units: sum(pr.map(p => p.units)), prevUnits: sum(pr.map(p => p.prevUnits)), sum: money(pta), prev: money(ptp), ch: chN.map((n, j) => sum(pr.map(p => p.u[j]))), delta: ptd.label, deltaBg: ptd.bg, deltaFg: ptd.fg };
-    const prRows = pr.slice().sort((x, y) => y.a - x.a).map(p => ({ name: p.name, code: p.code, ch: p.cs.map(c => c && c.current.units && c.current.price ? { price: money(c.current.price[k]), pace: dec(c.current.units / ct.d * 7, 1) + ' шт/тижд.' } : { price: '', pace: 'немає продажів' }) }));
+    const pOpen = this.state.pOpen || {};
+    const rowLook = (depth, extra) => Object.assign({ indent: depth * 22 + 'px', weight: depth ? 400 : 500, fontSize: depth ? '13px' : '14px', padY: compact ? '7px' : depth ? '8px' : '11px', chevOpacity: depth ? 0 : 1, chevRot: 'none', cursor: depth ? 'default' : 'pointer', bg: depth ? 'var(--card2)' : 'var(--card)' }, extra);
+    const pLine = (o, depth, extra) => { const z = o.units === 0 && o.pu > 0, d = delta(o.a, o.pa); return Object.assign(rowLook(depth), pfm(o.pn, o.pc, o.units), { name: o.name, code: o.code, units: o.units, prevUnits: '· ' + o.pu, sum: money(o.a), price: o.units ? money(o.gr / o.units) : '—', prev: money(o.pa), isZero: z, notZero: !z,
+      delta: d.label, deltaBg: z ? RED : d.bg, deltaFg: z ? '#fff' : d.fg }, z ? { bg: 'var(--zerobg)' } : {}, extra); };
+    const chParts = p => p.cs.map((c, j) => c && { name: chN[j], code: '', units: c.current.units, pu: c.previous ? c.previous.units : 0, a: c.current.net[k], pa: c.previous ? c.previous.net[k] : 0, gr: c.current.price ? c.current.price[k] * c.current.units : 0, pn: p.cm[j].pn, pc: p.cm[j].pc }).filter(Boolean).sort((x, y) => y.a - x.a || y.pa - x.pa);
+    const togg = (key, id) => () => this.setState(s => ({ [key]: Object.assign({}, s[key], { [id]: !(s[key] || {})[id] }) }));
+    const allBtn = (key, ids, open) => { const all = ids.length > 0 && ids.every(id => open[id]); return { label: all ? 'Згорнути всі' : 'Розгорнути всі', pick: () => this.setState({ [key]: all ? {} : Object.fromEntries(ids.map(id => [id, true])) }) }; };
+    const pRows = []; pr.forEach(p => { const open = !!pOpen[p.code];
+      pRows.push(pLine({ name: p.name, code: p.code, units: p.units, pu: p.prevUnits, a: p.a, pa: p.pa, gr: p.gr, pn: p.pn, pc: p.pc }, 0, { chevRot: open ? 'rotate(90deg)' : 'none', toggle: togg('pOpen', p.code) }));
+      if (open) chParts(p).forEach(c => pRows.push(pLine(c, 1))); });
+    const pAll = allBtn('pOpen', pr.map(p => p.code), pOpen);
+    const pta = sum(pr.map(p => p.a)), ptp = sum(pr.map(p => p.pa)), ptd = delta(pta, ptp), ptn = sum(pr.map(p => p.pn)), ptc = sum(pr.map(p => p.pc));
+    const pTotal = { units: sum(pr.map(p => p.units)), prevUnits: sum(pr.map(p => p.prevUnits)), sum: money(pta), prev: money(ptp), delta: ptd.label, deltaBg: ptd.bg, deltaFg: ptd.fg, profit: ptn ? money(ptn - ptc) : '—', margin: ptn ? Math.round((ptn - ptc) / ptn * 100) + '%' : '' };
+
 
     // ---- Реклама
-    const AD = D.ads, share = (sp, sl) => sl ? dec(sp / sl * 100, 1) + '%' : '', WI = AD.weeks.map((_, i) => i);
-    const wl = AD.weeks.map(w => { const a = pd(w.from), b = pd(w.to); return a.m === b.m ? a.d + '–' + b.d + ' ' + MG[b.m - 1] : a.d + ' ' + MG[a.m - 1].slice(0, 4) + '. – ' + b.d + ' ' + MG[b.m - 1].slice(0, 4) + '.'; });
-    const awS = WI.map(i => sum(AD.rows.map(a => a.weeks[i].spend[k]))), awL = WI.map(i => sum(AD.rows.map(a => a.weeks[i].sales[k]))), amx = Math.max(1, ...awL, ...awS);
-    const adWeeks = wl.map((label, i) => ({ label, note: AD.weeks[i].complete ? '' : 'неповний', op: AD.weeks[i].complete ? 1 : 0.45, sales: money(awL[i]), spend: money(awS[i]), salesH: awL[i] / amx * 180 + 'px', spendH: awS[i] / amx * 180 + 'px' }));
-    const adRows = AD.rows.map(a => { const sl = a.weeks.map(w => w.sales[k]), sp = a.weeks.map(w => w.spend[k]), mx = Math.max(1, ...sl, ...sp); return { name: a.name, spend: money(sum(sp)), sales: money(sum(sl)), share: share(sum(sp), sum(sl)), orders: sum(a.weeks.map(w => w.orders)),
-      weeks: sl.map((v, i) => ({ op: AD.weeks[i].complete ? 1 : 0.45, salesH: (v ? Math.max(2, v / mx * 26) : 1) + 'px', spendH: (sp[i] ? Math.max(2, sp[i] / mx * 26) : 1) + 'px', title: wl[i] + (AD.weeks[i].complete ? '' : ' (неповний)') + ': продажі ' + money(v) + ' · витрати ' + money(sp[i]) })) }; });
-    const adTotal = { spend: money(sum(awS)), sales: money(sum(awL)), share: share(sum(awS), sum(awL)), orders: sum(AD.rows.map(a => sum(a.weeks.map(w => w.orders)))) };
-    const af = pd(AD.weeks[0].from), at = pd(AD.weeks[AD.weeks.length - 1].to), afile = AD.fileDate ? pd(AD.fileDate) : null;
+    const share = (sp, sl) => sl ? dec(sp / sl * 100, 1) + '%' : '', WI = AW.map((_, i) => i);
+    const lim = (D.meta.adLimitPct ?? 10) / 100;
+    const okC = { bg: 'var(--okbg)', fg: 'var(--okfg)' }, badC = { bg: 'var(--badbg)', fg: 'var(--badfg)' }, neuC = { bg: 'transparent', fg: 'var(--ink)' };
+    const limC = (sp, base, on) => !on || !base ? neuC : sp / base > lim ? badC : okC;
+    const wl = AW.map(w => { const a = pd(w.from), b = pd(w.to); return a.m === b.m ? a.d + '–' + b.d + ' ' + MG[b.m - 1] : a.d + ' ' + MG[a.m - 1].slice(0, 4) + '. – ' + b.d + ' ' + MG[b.m - 1].slice(0, 4) + '.'; });
+    const hasW = i => !!AW[i].hasData, lastD = AWD.length ? AWD[AWD.length - 1] : -1, wv = (a, i, fn) => hasW(i) && a.weeks[i] ? fn(a.weeks[i]) : 0, wU = w => w.units ?? w.orders ?? 0;
+    const awS = WI.map(i => sum(AR.map(a => wv(a, i, w => w.spend[k])))), awL = WI.map(i => sum(AR.map(a => wv(a, i, w => w.sales[k])))), amx = Math.max(1, ...awL, ...awS);
+    const adWeeks = wl.map((label, i) => ({ label, has: hasW(i), none: !hasW(i), note: hasW(i) && i === lastD ? 'ще доганяє' : '', op: i === lastD ? 0.6 : 1, sales: money(awL[i]), spend: money(awS[i]), salesH: awL[i] / amx * 180 + 'px', spendH: awS[i] / amx * 180 + 'px' }));
+    const adRows = AR.map(a => { const sl = WI.map(i => wv(a, i, w => w.sales[k])), sp = WI.map(i => wv(a, i, w => w.spend[k])), mx = Math.max(1, ...sl, ...sp), al = sum(AWD.map(i => chanAll(a.channel, a.country, i))), cA = limC(sum(sp), al, true);
+      return { name: a.name, spend: money(sum(sp)), sales: money(sum(sl)), share: share(sum(sp), sum(sl)), shareBg: 'transparent', shareFg: 'var(--ink)', allShare: share(sum(sp), al), allBg: cA.bg, allFg: cA.fg, units: sum(WI.map(i => wv(a, i, wU))),
+        weeks: WI.map(i => ({ op: i === lastD ? 0.6 : 1, sBg: hasW(i) ? A : 'var(--axis)', pBg: hasW(i) ? 'var(--ink)' : 'var(--axis)', salesH: (sl[i] ? Math.max(2, sl[i] / mx * 26) : 1) + 'px', spendH: (sp[i] ? Math.max(2, sp[i] / mx * 26) : 1) + 'px',
+          title: wl[i] + (hasW(i) ? (i === lastD ? ' (продажі ще доганяють)' : '') + ': продажі ' + money(sl[i]) + ' · витрати ' + money(sp[i]) : ': немає файлу') })) }; });
+    (AD.pending ?? ['Реклама Allegro · Чехія']).filter(n => !AR.some(a => a.name === n)).forEach(n => adRows.push({ name: n, pending: true, spend: '', sales: '', share: '', shareBg: 'transparent', shareFg: 'var(--ink)', allShare: '', allBg: 'transparent', allFg: 'var(--ink)', units: '', weeks: [] }));
+    const tAll = sum(AR.map(a => sum(AWD.map(i => chanAll(a.channel, a.country, i))))), lAllow = tAll * lim, lDiff = sum(awS) - lAllow, lC = lDiff > 0 ? badC : okC, limPct = Math.round(lim * 100) + '\u00a0%';
+    const adTotal = { spend: money(sum(awS)), sales: money(sum(awL)), share: share(sum(awS), sum(awL)), allShare: share(sum(awS), tAll), limPct, limText: 'Ліміт ' + limPct + ' від усіх продажів каналу в країні',
+      limStatus: !tAll ? 'Немає продажів для порівняння' : lDiff > 0 ? 'Більше ліміту на ' + money(lDiff) : 'У межах ліміту, запас ' + money(-lDiff), limBg: tAll ? lC.bg : 'var(--soft)', limFg: tAll ? lC.fg : 'var(--mid)', units: sum(adRows.map(r => r.units || 0)) };
+    const af = AWD.length ? pd(AW[AWD[0]].from) : null, at = AWD.length ? pd(AW[lastD].to) : null, nW = AWD.length;
 
     const btn = (on, label, pick) => ({ label, pick, bg: on ? 'var(--card)' : 'transparent', fg: on ? 'var(--ink)' : 'var(--mute)', shadow: on ? '0 1px 2px var(--shadow)' : 'none' });
+    // ---- За період: daily, dailyOrders, catalog, meta.dataFrom
+    const DO = D.dailyOrders || [], cat = new Map((D.catalog || []).map(c => [c.sku, c.name]));
+    const zdt = s => new Date(s + 'T00:00:00Z'), zadd = (s, n) => { const x = zdt(s); x.setUTCDate(x.getUTCDate() + n); return x.toISOString().slice(0, 10); };
+    const zMax = D.meta.current.to, zMin = D.meta.dataFrom || DY.reduce((m, r) => r.d < m ? r.d : m, D.meta.current.from);
+    const zcl = s => !s ? null : s < zMin ? zMin : s > zMax ? zMax : s;
+    const zm0 = zMax.slice(0, 8) + '01', zpe = zadd(zm0, -1), zps = zpe.slice(0, 8) + '01';
+    const zPre = { month: [zm0, zMax], prev: [zps, zpe], d30: [zadd(zMax, -29), zMax], d90: [zadd(zMax, -89), zMax], all: [zMin, zMax] };
+    const zp = this.state.zPreset, zraw = zp === 'custom' ? [this.state.zFrom, this.state.zTo] : zPre[zp];
+    let zFrom = zcl(zraw[0]) || zMin, zTo = zcl(zraw[1]) || zMax; if (zFrom > zTo) { const t = zFrom; zFrom = zTo; zTo = t; }
+    const zfd = s => { const x = pd(s); return x.d + ' ' + MG[x.m - 1] + ' ' + x.y; };
+    const zr = DY.filter(r => r.d >= zFrom && r.d <= zTo), zo = DO.filter(r => r.d >= zFrom && r.d <= zTo);
+    const zkey = r => [r.channel, r.country || '', r.source || ''].join('|'), zs = new Map();
+    const zget = r => { const kk = zkey(r); if (!zs.has(kk)) zs.set(kk, { channel: r.channel, country: r.country, source: r.source, net: 0, gross: 0, units: 0, orders: 0, pn: 0, pc: 0, items: new Map() }); return zs.get(kk); };
+    const zput = (m, id, u, n, g, extra, pn, pc) => { const x = m.get(id) || Object.assign({ units: 0, net: 0, gross: 0, pn: 0, pc: 0 }, extra); x.units += u; x.net += n; x.gross += g; x.pn += pn || 0; x.pc += pc || 0; m.set(id, x); return x; };
+    const zprod = new Map();
+    zr.forEach(r => { const s = zget(r), n = r.net[k], g = r.gross[k]; const c = r.cost ? r.cost[k] : null, pn = c == null ? 0 : n, pc = c == null ? 0 : c; s.net += n; s.gross += g; s.units += r.units; s.pn += pn; s.pc += pc; zput(s.items, r.sku, r.units, n, g, null, pn, pc);
+      const x = zput(zprod, r.sku, r.units, n, g, { sku: r.sku, name: cat.get(r.sku) || r.sku, src: new Map() }, pn, pc); zput(x.src, zkey(r), r.units, n, g, { channel: r.channel, sub: r.country || r.source || '' }, pn, pc); });
+    zo.forEach(r => { zget(r).orders += r.orders; });
+    const zl = [...zs.values()].filter(s => s.net || s.units || s.orders), zNet = sum(zl.map(s => s.net)), zUnits = sum(zl.map(s => s.units)), zOrders = sum(zl.map(s => s.orders)), zPn = sum(zl.map(s => s.pn)), zPc = sum(zl.map(s => s.pc));
+    const zpm = x => x.pn ? { profit: money(x.pn - x.pc), margin: Math.round((x.pn - x.pc) / x.pn * 100) + '%', pfFg: 'var(--ink)', pfSize: 'inherit' } : { profit: 'немає даних', margin: '', pfFg: 'var(--faint)', pfSize: '12px' };
+    const noCostText = rows => { const n = new Set(rows.filter(r => !r.cost).map(r => r.sku)).size; return n ? 'Немає собівартості для товарів: ' + n + '. Вони не входять у прибуток і маржу.' : ''; };
+    const zmerge = ks => { const n = { net: 0, gross: 0, units: 0, orders: 0, pn: 0, pc: 0, items: new Map() }; ks.forEach(x => { n.net += x.net; n.gross += x.gross; n.units += x.units; n.orders += x.orders; n.pn += x.pn; n.pc += x.pc; x.items.forEach((v, sku) => zput(n.items, sku, v.units, v.net, v.gross, null, v.pn, v.pc)); }); return n; };
+    const zgroup = (rs, f) => { const m = new Map(); rs.forEach(r => { const v = f(r) || ''; if (!m.has(v)) m.set(v, []); m.get(v).push(r); }); return [...m]; };
+    const zbyNet = (a, b) => b.net - a.net;
+    const ztree = zgroup(zl, s => s.channel).map(([ch, rs]) => {
+      if (rs.length === 1 && !rs[0].country && !rs[0].source) return Object.assign({}, rs[0], { id: ch, name: ch });
+      const kids = (rs.some(r => r.country) ? zgroup(rs, r => r.country).map(([c, cr]) => cr.length === 1 && !cr[0].source ? Object.assign({}, cr[0], { name: c }) : Object.assign(zmerge(cr), { channel: cr[0].channel, country: c, name: c, kids: cr.map(r => Object.assign({}, r, { name: r.source })).sort(zbyNet) }))
+        : rs.map(r => Object.assign({}, r, { name: r.source }))).sort(zbyNet);
+      return Object.assign(zmerge(rs), { channel: ch, id: ch, name: ch, kids }); }).sort(zbyNet);
+    const zAdr = adIn(zFrom, zTo, () => true), zAdOf = n => { const rs = zAdr.filter(r => r.channel === n.channel && (!n.country || r.country === n.country)); return rs.length ? adAgg(rs).spend : null; };
+    const zAdCols = n => { const a = zAdOf(n); return { ad: a == null ? '' : money(a), after: a == null ? '' : n.pn ? money(n.pn - n.pc - a) : '—' }; };
+    const zOpen = this.state.zOpen, ztog = id => () => this.setState(s => ({ zOpen: Object.assign({}, s.zOpen, { [id]: !s.zOpen[id] }) }));
+    const zprice = (g, u) => u ? money(g / u) : '', zshare = n => zNet ? dec(n / zNet * 100, 1) + '%' : '';
+    const zSrcRows = [];
+    const zwalk = (n, depth, id) => { const open = !!zOpen[id], io = !!zOpen[id + '#p'];
+      zSrcRows.push({ ...zpm(n), ...zAdCols(n), isRow: true, isSub: false, name: n.name, indent: depth * 22 + 'px', bg: depth ? 'var(--card2)' : 'var(--card)', weight: depth ? 400 : 600, chevRot: open ? 'rotate(90deg)' : 'none', chevOpacity: n.kids ? 1 : 0,
+        net: money(n.net), share: zshare(n.net), orders: n.orders, units: n.units, toggle: ztog(n.kids ? id : id + '#p'), toggleItems: e => { e.stopPropagation(); ztog(id + '#p')(); },
+        btnLabel: io ? 'сховати' : 'товари', btnBg: io ? 'var(--ink)' : 'var(--card)', btnFg: io ? 'var(--card)' : 'var(--mid)' });
+      if (io) zSrcRows.push({ isRow: false, isSub: true, indent: depth * 22 + 46 + 'px', title: 'Товари: ' + n.name,
+        items: [...n.items].sort((a, b) => b[1].net - a[1].net).map(([sku, v]) => ({ ...zpm(v), name: cat.get(sku) || sku, code: sku, units: v.units, net: money(v.net), price: zprice(v.gross, v.units) })) });
+      if (n.kids && open) n.kids.forEach((x, i) => zwalk(x, depth + 1, id + '/' + i)); };
+    ztree.forEach(n => zwalk(n, 0, 's:' + n.id));
+    const zsk = this.state.zSort, zsd = this.state.zDir, zkf = x => zsk === 'name' ? x.name : zsk === 'units' ? x.units : zsk === 'price' ? (x.units ? x.gross / x.units : 0) : zsk === 'profit' ? (x.pn ? x.pn - x.pc : -1e12) : zsk === 'margin' ? (x.pn ? (x.pn - x.pc) / x.pn : -1e12) : x.net;
+    const zProdRows = [];
+    [...zprod.values()].sort((x, y) => { const a = zkf(x), b = zkf(y); return (typeof a === 'string' ? a.localeCompare(b, 'uk') : a - b) * zsd; }).forEach(x => { const id = 'p:' + x.sku, open = !!zOpen[id];
+      zProdRows.push({ ...zpm(x), isRow: true, isSub: false, name: x.name, code: x.sku, units: x.units, net: money(x.net), share: zshare(x.net), price: zprice(x.gross, x.units), chevRot: open ? 'rotate(90deg)' : 'none', toggle: ztog(id) });
+      if (open) zProdRows.push({ isRow: false, isSub: true, items: [...x.src.values()].sort(zbyNet).map(s => ({ ...zpm(s), channel: s.channel, sub: s.sub, units: s.units, net: money(s.net), price: zprice(s.gross, s.units) })) }); });
+    const zv = this.state.zView, zEmpty = !zl.length;
+    // ---- Прибуток: валовий прибуток з daily за meta.current, порівняння з meta.previous
+    const gsel = (a, b) => DY.filter(r => r.d >= a && r.d <= b), gcR = gsel(D.meta.current.from, D.meta.current.to), gpR = gsel(D.meta.previous.from, D.meta.previous.to), gz = { net: 0, pn: 0, pc: 0, units: 0 };
+    const gacc = (rs, kf) => { const m = new Map(); rs.forEach(r => { const id = kf(r), x = m.get(id) || { net: 0, pn: 0, pc: 0, units: 0 }, n = r.net[k], c = r.cost ? r.cost[k] : null; x.net += n; x.units += r.units; if (c != null) { x.pn += n; x.pc += c; } m.set(id, x); }); return m; };
+    const gmar = x => x.pn ? Math.round((x.pn - x.pc) / x.pn * 100) + '%' : 'немає даних';
+    const gRow = (name, c, p, depth, extra) => { c = c || gz; p = p || gz; const has = c.pn > 0, hp = p.pn > 0, d = has && hp ? delta(c.pn - c.pc, p.pn - p.pc) : delta(0, 0);
+      return Object.assign({ ad: '', after: '', name, indent: depth * 22 + 'px', weight: depth ? 400 : 600, bg: depth ? 'var(--card2)' : 'var(--card)', units: c.units, net: money(c.net), profit: has ? money(c.pn - c.pc) : c.net ? 'немає даних' : '—', pfFg: has ? 'var(--ink)' : 'var(--faint)', pfSize: has || !c.net ? 'inherit' : '12px',
+        margin: has ? gmar(c) : '', prev: hp ? money(p.pn - p.pc) : p.net ? 'немає даних' : '', delta: d.label, deltaBg: d.bg, deltaFg: d.fg, sortV: has ? c.pn - c.pc : -1e12 }, extra); };
+    const gT = gacc(gcR, () => 1).get(1) || gz, gTp = gacc(gpR, () => 1).get(1) || gz, gd = delta(gT.pn - gT.pc, gTp.pn - gTp.pc), gdn = delta(gT.net, gTp.net), gd0 = delta(0, 0);
+    const AM = AD.month, gAr = adIn(D.meta.current.from, D.meta.current.to, () => true), amOk = gAr.length > 0 || !!(AM && AM.from);
+    const gA = gAr.length ? adAgg(gAr).spend : amOk ? sum((AM.channels || []).map(c => c.spend[k])) : 0;
+    const amWin = (() => { if (!amOk) return ''; const lo = gAr.length ? dMin(gAr) : AM.from, hi = gAr.length ? dMax(gAr) : AM.to, a = pd(lo), b = pd(hi); return a.d + (a.m === b.m ? '' : '.' + p2(a.m)) + '–' + b.d + '.' + p2(b.m); })();
+    const gAdFor = (ch, cty) => { if (gAr.length) { const rs = gAr.filter(r => r.channel === ch && (!cty || r.country === cty)); return rs.length ? adAgg(rs).spend : null; }
+      const a = amOk ? (AM.channels || []).find(x => x.channel === ch && (!cty || !x.country || x.country === cty)) : null; return a ? a.spend[k] : null; };
+    const gAdR = (row, c, ch, cty) => { c = c || gz; const sp = gAdFor(ch, cty); return Object.assign(row, { ad: sp == null ? '—' : money(sp), after: c.pn ? money(c.pn - c.pc - (sp || 0)) : '—' }); };
+    const gsub = r => r.country || r.source || '', gCc = gacc(gcR, r => r.channel), gCp = gacc(gpR, r => r.channel), gSc = gacc(gcR, r => r.channel + '|' + gsub(r)), gSp = gacc(gpR, r => r.channel + '|' + gsub(r));
+    const gChanRows = []; [...new Set([...gCc.keys(), ...gCp.keys()])].sort((a, b) => ((gCc.get(b) || gz).net) - ((gCc.get(a) || gz).net)).forEach(ch => { gChanRows.push(gAdR(gRow(ch, gCc.get(ch), gCp.get(ch), 0), gCc.get(ch), ch));
+      [...new Set([...gSc.keys(), ...gSp.keys()])].filter(x => x.startsWith(ch + '|') && x.length > ch.length + 1).sort((a, b) => ((gSc.get(b) || gz).net) - ((gSc.get(a) || gz).net)).forEach(x => { const sb = x.slice(ch.length + 1); gChanRows.push(gAdR(gRow(sb, gSc.get(x), gSp.get(x), 1), gSc.get(x), ch, sb)); }); });
+
+    const gline = (name, c, p, d, strong) => ({ name, cur: c, prev: p, tag: '', tagFg: '', delta: d.label, deltaBg: d.bg, deltaFg: d.fg, weight: strong ? 700 : 400, bg: strong ? 'var(--card2)' : 'var(--card)' });
+    const mr = x => x.pn ? (x.pn - x.pc) / x.pn * 100 : null, gmd = dpp(mr(gT), mr(gTp));
+    const g = { profit: gT.pn ? money(gT.pn - gT.pc) : 'немає даних', margin: gmar(gT), prevProfit: gTp.pn ? money(gTp.pn - gTp.pc) : 'немає даних', prevMargin: gmar(gTp), delta: gd.label, deltaBg: gd.bg, deltaFg: gd.fg, noCost: noCostText(gcR),
+      lines: [gline('Продажі', money(gT.net), money(gTp.net), gdn), gline('− Собівартість товару', money(gT.pc), money(gTp.pc), Object.assign({}, delta(gT.pc, gTp.pc), { bg: 'var(--soft)', fg: 'var(--mid)' })), gline('= Валовий прибуток', money(gT.pn - gT.pc), money(gTp.pn - gTp.pc), gd, true), gline('Валова маржа', gmar(gT), gmar(gTp), gmd)],
+      mDelta: gmd.label, mDeltaBg: gmd.bg, mDeltaFg: gmd.fg, adOk: amOk, adNo: !amOk, ad: amOk ? money(gA) : '', adWin: amWin, after: amOk ? money(gT.pn - gT.pc - gA) : '', afterMargin: amOk && gT.pn ? Math.round((gT.pn - gT.pc - gA) / gT.pn * 100) + '%' : '',
+      chanRows: gChanRows };
+    const z = {
+      presets: [['month','Цей місяць'],['prev','Минулий місяць'],['d30','Останні 30 днів'],['d90','Останні 90 днів'],['all','Увесь час']].map(([kk, label]) => ({ label, pick: () => this.setState({ zPreset: kk }), bg: zp === kk ? A : 'var(--card)', fg: zp === kk ? 'var(--card)' : 'var(--mid)', line: zp === kk ? A : 'var(--line)' })),
+      from: zFrom, to: zTo, min: zMin, max: zMax, scheme: this.theme(), inputLine: zp === 'custom' ? A : 'var(--line)',
+      setFrom: e => this.setState({ zPreset: 'custom', zFrom: e.target.value || zFrom, zTo }), setTo: e => this.setState({ zPreset: 'custom', zFrom, zTo: e.target.value || zTo }),
+      dataFromText: 'Дані в базі з ' + zfd(zMin),
+      periodText: zFrom === zTo ? zfd(zFrom) : zFrom.slice(0, 7) === zTo.slice(0, 7) ? pd(zFrom).d + '–' + zfd(zTo) : zfd(zFrom) + ' – ' + zfd(zTo),
+      ...zpm({ pn: zPn, pc: zPc }), ad: zAdr.length ? money(adAgg(zAdr).spend) : '', after: zAdr.length && zPn ? money(zPn - zPc - adAgg(zAdr).spend) : '', adNote: (s => s ? s[0].toUpperCase() + s.slice(1) + '.' : '')(adCov(zFrom, zTo)), noCost: noCostText(zr), net: money(zNet), orders: zOrders, units: zUnits, days: Math.round((zdt(zTo) - zdt(zFrom)) / 86400000) + 1,
+      views: [['src','За джерелами'],['prod','За товарами']].map(([kk, l]) => btn(zv === kk, l, () => this.setState({ zView: kk }))),
+      empty: zEmpty, showSrc: !zEmpty && zv === 'src', showProd: !zEmpty && zv === 'prod', srcRows: zSrcRows, prodRows: zProdRows,
+      prodCols: [['name','Товар','left',''],['units','Штук','right',''],['net','Продажі','right','без ПДВ'],['share','Частка','right',''],['price','Середня ціна','right','з ПДВ'],['profit','Валовий прибуток','right',''],['margin','Маржа','right','']].map(([kk, label, align, sub]) => { const key = kk === 'share' ? 'net' : kk, on = zsk === key && (kk !== 'share');
+        const zt = { name: 'Натисніть на товар, щоб побачити, з яких джерел він продавався. Натисніть на заголовок стовпця, щоб відсортувати.', price: 'Середня фактична ціна: продажі з ПДВ, поділені на продані штуки.', profit: GROSS, margin: MARG }[kk];
+        return { tipHas: !!zt, tipText: zt || '', tip: tipOf('zc' + kk), label, align, sub, fg: on ? 'var(--ink)' : 'var(--mute)', weight: on ? 600 : 400, arrow: on ? (zsd < 0 ? '▼' : '▲') : '', sort: () => this.setState(s => ({ zSort: key, zDir: s.zSort === key ? -s.zDir : (key === 'name' ? 1 : -1) })) }; })
+    };
     return {
-      tabs: [['sources','Джерела'],['products','Товари'],['prices','Ціни'],['ads','Реклама'],['profit','Прибуток'],['help','Інструкція']].map(([kk, label]) => ({ label, note: kk === 'profit', weight: tab === kk ? 600 : 400, fg: tab === kk ? A : 'var(--mute)', line: tab === kk ? A : 'transparent', pick: () => this.setState({ tab: kk }) })),
-      tabSources: tab === 'sources', tabProducts: tab === 'products', tabPrices: tab === 'prices', tabAds: tab === 'ads', tabProfit: tab === 'profit', tabHelp: tab === 'help', padY: compact ? '7px' : '11px',
+      tabs: [['sources','Джерела'],['products','Товари'],['period','За період'],['ads','Реклама'],['profit','Прибуток']].map(([kk, label]) => ({ label, note: false, weight: tab === kk ? 600 : 400, fg: tab === kk ? A : 'var(--mute)', line: tab === kk ? A : 'transparent', pick: () => this.setState({ tab: kk }) })),
+      tabSources: tab === 'sources', tabProducts: tab === 'products', tabPeriod: tab === 'period', z, g, tabAds: tab === 'ads', tabProfit: tab === 'profit', tips, tipX: this.state.tipX, tipY: this.state.tipY, tipT: this.state.tipT,
+      srcLabel: window.LUMPURINI_SOURCE === 'db' ? 'дані з бази' : 'приклад', srcDot: window.LUMPURINI_SOURCE === 'db' ? 'var(--okfg)' : 'var(--amber)', padY: compact ? '7px' : '11px',
       periodCur: range(cf, ct), periodPrev: range(pf, pt), curMonth: MN[ct.m - 1], prevMonth: MN[pt.m - 1],
       updatedText: 'Дані по ' + ct.d + ' ' + MG[ct.m - 1] + ' включно · оновлено ' + fullDate(up) + ', ' + up.t,
-      segLabels: segs.map(s => s.label), segNote: lastSeg.complete ? '' : segs[segs.length - 1].label + ': відрізок неповний, ' + lastSeg.days + ' ' + dn(lastSeg.days) + ' проти тих самих днів минулого місяця',
+      segLabels: dl.map(x => x.label), segNote: (() => { const i = DC.findIndex(d => d.started && !d.complete); return i < 0 ? '' : dl[i].label + ': декада неповна, ' + DC[i].days + ' ' + dn(DC[i].days) + ' проти тих самих днів минулого місяця'; })(),
+      curMonthLower: MN[ct.m - 1].toLowerCase(), prevMonthLower: MN[pmM - 1].toLowerCase(),
       noSales: (D.meta.channelsWithoutSales || []).join(', '),
-      pCols, pRows, pTotal, pGrid: 'minmax(270px,1fr) 84px 110px repeat(' + chN.length + ',68px) 110px 84px', pMinW: 700 + chN.length * 80 + 'px',
-      prCols: chN, prRows, prGrid: 'minmax(270px,1fr) repeat(' + chN.length + ',minmax(120px,1fr))', prMinW: 340 + chN.length * 136 + 'px',
-      adWeeks, adRows, adTotal, adPeriod: af.d + ' ' + MG[af.m - 1] + ' – ' + at.d + ' ' + MG[at.m - 1], adFile: afile ? 'Файл Allegro Ads: ' + fullDate(afile) : 'Витрати на рекламу ще не завантажені',
+      pCols, pRows, pTotal, pAll,
+      adWeeks, adRows, adTotal, adCatch: lastD >= 0, adPeriod: af ? 'файл є за ' + nW + ' ' + (nW === 1 ? 'тиждень' : nW < 5 ? 'тижні' : 'тижнів') + ' з ' + AW.length + ': ' + af.d + (af.m === at.m ? '' : ' ' + MG[af.m - 1]) + '–' + at.d + ' ' + MG[at.m - 1] : 'файлів реклами ще немає', adFile: AD.fileDate ? 'Файл Allegro Ads: ' + fullDate(pd(AD.fileDate)) : 'Витрати на рекламу ще не завантажені',
       rows, mRows, views: [['chan','За каналами'],['type','За типом продажів']].map(([kk, l]) => btn(view === kk, l, () => this.setState({ view: kk }))),
       
       currencies: [['PLN','zł'],['EUR','€']].map(([kk, l]) => btn(cur === kk, l, () => this.setState({ cur: kk }))),
       total: { cur: money(tc), prev: money(tpv), delta: td.label, deltaBg: td.bg, deltaFg: td.fg, orders: sum(chans.map(c => c.co)), prevOrders: sum(chans.map(c => c.po || 0)) },
-      b: { weeks: bWeeks }, c: { rows: cRows }
+      decades, month, c: { rows: cRows }
     };
   }
 }
